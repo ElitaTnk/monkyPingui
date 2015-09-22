@@ -9,8 +9,7 @@ pilas = pilasengine.iniciar()
 import escenaInicio
 import nivel1
 
-caca = escenaInicio.PantallaBienvenida
-pilas.escenas.vincular(caca)
-pilas.escenas.caca("MonkyPingui\n Bienvenido")
+pilas.escenas.vincular(escenaInicio.PantallaBienvenida)
+pilas.escenas.escenaInicio.PantallaBienvenida("MonkyPingui\n Bienvenido")
 
 pilas.ejecutar()
