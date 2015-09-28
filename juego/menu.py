@@ -1,7 +1,9 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 import pilasengine
-pilas = pilasengine.iniciar()
+import ayuda
+#import escena_juego
+#pilas = pilasengine.iniciar()
 
 class EscenaMenu(pilasengine.escenas.Escena):
     #Escena principal donde se encuentra el menu para iniciar o ver ayuda o bien salir del juego
@@ -11,11 +13,12 @@ class EscenaMenu(pilasengine.escenas.Escena):
         #Contenido de la escena principal: logo, menu...
         self.set_logo()
         self.menu_inicial()
+        #self.pilas.eventos.click_de_mouse.conectar(self._iniciar_el_juego)
 
     def set_logo(self):
         #importamos logo desde carpeta
-        imagen = pilas.imagenes.cargar("data/logo.png")
-        logo = pilas.actores.Actor()
+        imagen = pilasengine.imagenes.cargar("data/logo.png")
+        logo = pilasengine.actores.Actor()
         logo.imagen = imagen
         logo.y = 200
 
@@ -23,30 +26,26 @@ class EscenaMenu(pilasengine.escenas.Escena):
         #creamos opciones y instanciamos el menu principal
         opciones = [
             ("Comenzar a jugar", self.comenzar_juego),
-            ("Ver ayuda", self.ayuda),
+            ("Ver ayuda", self.ir_pantalla_ayuda),
             ("Salir", self.salir_juego)
         ]
         self.menu = pilas.actores.Menu(opciones, y = 0)
 
+    def ir_pantalla_ayuda(self):
+        pilasengine.escenas.vincular(ayuda.PantallaAyuda)
+        pilasengine.escenas.PantallaAyuda()
+
     def comenzar_juego(self):
         #lleva a la escena del juego en si mismo
-        import escena_juego
-        pilas.cambiar_escena(escena_juego.Juego())
-
-    def ayuda(self):
-        #lleva a la pantalla de ayuda
-        import ayuda
-        pilas.cambiar_escena(ayuda.PantallaAyuda())
+        #self.pilasengine.escenas.escena_juego.Juego()
+        pass
+    
 
     def salir_juego(self):
         #sale del juego
-        pilas.terminar()    
+        pilasengine.terminar()    
      
-        
-        
-                
-pilas.escenas.vincular(EscenaMenu)
-pilas.escenas.EscenaMenu() 
-          
-pilas.ejecutar()
-
+            
+pilasengine.escenas.vincular(EscenaMenu)
+pilasengine.escenas.EscenaMenu()
+#pilas.escenas.vincular(escena_juego.Juego)
