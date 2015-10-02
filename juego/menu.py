@@ -1,22 +1,28 @@
-# -*- coding: utf-8 -*-
+# -*- coding: UTF-8 -*-
 
 import pilasengine
 
+class Logo(pilasengine.actores.Actor):
+    #creacion de clase Logo, para ser utilizada en varias escenas
+    def iniciar(self):
+        #importamos logo desde carpeta
+        self.imagen = "data/logo.png"
+        self.y = 150
+        
 class EscenaMenu(pilasengine.escenas.Escena):
     #Escena principal donde se encuentra el menu para iniciar o ver ayuda o bien salir del juego
     #creación de la clase para la nueva pantalla a partir de la clase madre pilas.escena.Escena
     
     def iniciar(self):
         #Contenido de la escena principal: logo, menu...
-        self.set_logo()
+        self.pilas.fondos.Galaxia()
         self.menu_inicial()
+        self.logo = Logo(self.pilas)
+        self.animacion_entrada_texto(self.logo)
 
-    def set_logo(self):
-        #importamos logo desde carpeta
-        imagen = self.pilas.imagenes.cargar("data/logo.png")
-        logo = self.pilas.actores.Actor()
-        logo.imagen = imagen
-        logo.y = 200
+    def animacion_entrada_texto(self, texto):
+        texto.escala = 2
+        texto.escala = [1], 1.5
 
     def menu_inicial(self):
         #creamos opciones y instanciamos el menu principal
@@ -28,13 +34,12 @@ class EscenaMenu(pilasengine.escenas.Escena):
         self.menu = self.pilas.actores.Menu(opciones, y = 0)
 
     def ir_pantalla_ayuda(self):
+        #lleva a la escena de ayuda
         self.pilas.escenas.PantallaAyuda()
 
     def comenzar_juego(self):
         #lleva a la escena del juego en si mismo
-        #self.pilas.escenas.escena_juego.Juego()
-        pass
-    
+        self.pilas.escenas.Nivel()
 
     def salir_juego(self):
         #sale del juego

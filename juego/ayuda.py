@@ -1,9 +1,11 @@
-# -*- coding: utf-8 -*-
-
+# -*- coding: UTF-8 -*-
 import pilasengine
+from menu import Logo
 
-texto_ayuda = """Aca hay que poner las indicaciones de como jugar :D """
+texto_ayuda = "Mové a Pingui para indentificar la figura diferente de tres o mas opciones dadas.  El nivel se acaba cuando aciertes todos los rounds. Si se te acaba el tiempo o te quedas sin vidas perdes!"
 
+#decode de texto para que se pueda usar acentos 
+texto_ayuda = texto_ayuda.decode('utf-8')
 
 class PantallaAyuda(pilasengine.escenas.Escena):
     #en esta pantalla se dan las instrucciones de juego
@@ -16,14 +18,13 @@ class PantallaAyuda(pilasengine.escenas.Escena):
         self.boton = self.pilas.interfaz.Boton("Volver al Inicio")
         self.boton.y = -100
         self.boton.conectar(self.regresa_inicio)
-
+        self.logo = Logo(self.pilas)
 
     def crear_texto_ayuda(self):
-        self.pilas.actores.Texto("Como se juega?:" , y = 100)
-        self.pilas.actores.Texto(texto_ayuda)
+        self.pilas.actores.Texto("Como se juega?:" , y = 50)
+        self.pilas.actores.Texto(texto_ayuda,  magnitud = 16, ancho = 600, y = -30)
             
     def regresa_inicio(self):
-        #importa la escena de inicio y ejecuta el cambio de pantalla
-
+        #vuelve la escena de inicio y ejecuta el cambio de pantalla
         self.pilas.escenas.EscenaMenu()
 
