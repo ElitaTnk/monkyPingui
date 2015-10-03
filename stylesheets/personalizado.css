@@ -1,0 +1,11 @@
+.logo {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    border: 0 none;
+    box-shadow: 0 0;
+}
+
+#header_wrap {
+    background: url(../images/monkyPingui/galaxia.png) repeat;
+}
