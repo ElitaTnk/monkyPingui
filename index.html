@@ -5,9 +5,14 @@
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="description" content="Monkypingui : Mini video juego sobre Monky y Pingui">
-
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="javascripts/shCore.js" type="text/javascript" charset="utf-8" async defer></script>
+    <script src="javascripts/shBrushPython.js" type="text/javascript" charset="utf-8" async defer></script>
+    
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/shCore.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/shThemeDefault.css">
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/personalizado.css">
 
     <title>Monkypingui</title>
@@ -35,32 +40,149 @@
       <section id="main_content" class="inner">
             <p><strong>MonkyPingui</strong> es un mini video juego realizado por <em>Eliana Rodriguez</em> y <em>Maria Alejandra Cuervo Miranda</em>, cursando 1er año de <strong>Analisis de Sistemas</strong>.</p>
 
-            <h3><a id="descripción-general-del-juego" class="anchor" href="#descripci%C3%B3n-general-del-juego" aria-hidden="true"><span class="octicon octicon-link"></span></a>Descripción general del juego</h3>
-            <p>Este juego es un mix de plataforma y agilidad mental (ingenio), ya que el usuario tendrá el contról del personaje principal y con el deberá resolver 3 niveles de distinta dificultad. </p>
+            <h2><a id="descripción-general-del-juego" class="anchor" href="#descripci%C3%B3n-general-del-juego" aria-hidden="true"><span class="octicon octicon-link"></span></a>Descripción general del juego</h2>
+            <p>Este juego es un mix de plataforma y agilidad mental (ingenio), ya que el usuario tendrá el contról del personaje principal y con el deberá resolver 2 niveles de distinta dificultad. </p>
 
             <h3><a id="en-qué-consiste" class="anchor" href="#en-qu%C3%A9-consiste" aria-hidden="true"><span class="octicon octicon-link"></span></a>En qué consiste</h3>
 
             <p>El usuario será el personaje "Pingui", y tendrá que indentificar la figura diferente de tres o más opciones dadas.<br/>
             El nivel se acaba una vez pasado el tiempo dado, o cuando el usuario acierta todas las veces o pierde todas las veces. </p>
 
+            <h2>Estructura a utilizar</h2>
+            <p>El código estrá dividido en distintos módulos, siendo el archivo principal donde se ejecutan las llamadas necesarias e importaciones el llamado <strong>monkyPingui.py</strong>.</p>
+            <p>Luego, el juego se divide en tres grandes módulos: <em>menu.py</em>, <em>ayuda.py</em> y <em>juego.py</em>.</p>
+            <img src="images/monkyPingui/diagrama.png" alt="Diagrama de flujo">
+
             <h3><a id="planeamiento-del-juego" class="anchor" href="#planeamiento-del-juego" aria-hidden="true"><span class="octicon octicon-link"></span></a>Planeamiento del juego</h3>
 
             <p>En primer lugar el usuario se encuentra con la pantalla inicial, la cual contiene el logo del juego, un menú con tres opciones: Empezar a jugar, ver ayuda y salir del juego.</p>
 
-            <img alt="Primer escena" src="images/monkyPingui/pantalla_inicio.jpg">
+            <div class="tabs">
+                <ul class="header-tabs">
+                    <li  class="active">
+                        <a href="#final1" title="Resultado de la pantalla de inicio">Resultado</a>
+                    </li>
+                    <li>
+                        <a href="#codigo1" title="Código de la pantalla de inicio">Código</a>
+                    </li>
+                </ul>
+                <ul class="body-tabs">
+                    <li id="final1">
+                        <img alt="Primer escena" src="images/monkyPingui/pantalla_inicio.jpg">
+                    </li>
+                    <li id="codigo1">
+                        <pre class="brush: python">
+                            # -*- coding: UTF-8 -*-
+
+                            import pilasengine
+
+                            class Logo(pilasengine.actores.Actor):
+                                #creacion de clase Logo, para ser utilizada en varias escenas
+                                def iniciar(self):
+                                    #importamos logo desde carpeta
+                                    self.imagen = "data/logo.png"
+                                    self.y = 150
+                                    
+                            class EscenaMenu(pilasengine.escenas.Escena):
+                                #Escena principal donde se encuentra el menu para iniciar o ver ayuda o bien salir del juego
+                                #creación de la clase para la nueva pantalla a partir de la clase madre pilas.escena.Escena
+                                
+                                def iniciar(self):
+                                    #Contenido de la escena principal: logo, menu...
+                                    self.pilas.fondos.Galaxia()
+                                    self.menu_inicial()
+                                    self.logo = Logo(self.pilas)
+                                    self.animacion_entrada_texto(self.logo)
+
+                                def animacion_entrada_texto(self, texto):
+                                    texto.escala = 2
+                                    texto.escala = [1], 1.5
+
+                                def menu_inicial(self):
+                                    #creamos opciones y instanciamos el menu principal
+                                    opciones = [
+                                        ("Comenzar a jugar", self.comenzar_juego),
+                                        ("Ver ayuda", self.ir_pantalla_ayuda),
+                                        ("Salir", self.salir_juego)
+                                    ]
+                                    self.menu = self.pilas.actores.Menu(opciones, y = 0)
+
+                                def ir_pantalla_ayuda(self):
+                                    #lleva a la escena de ayuda
+                                    self.pilas.escenas.PantallaAyuda()
+
+                                def comenzar_juego(self):
+                                    #lleva a la escena del juego en si mismo
+                                    self.pilas.escenas.Nivel()
+
+                                def salir_juego(self):
+                                    #sale del juego
+                                    self.pilas.terminar() 
+                        </pre>
+                    </li>
+                </ul>
+            </div>
+            
 
             <p>La pantalla de ayuda contiene las indicaciones del juego y un botón para volver a la pantalla anterior</p>
 
-            <img alt="Primer escena" src="images/monkyPingui/pantalla_ayuda.jpg">
+            <div class="tabs">
+                <ul class="header-tabs">
+                    <li class="active">
+                        <a href="#final2" title="Resultado de la pantalla de Ayuda">Resultado</a>
+                    </li>
+                    <li>
+                        <a href="#codigo2" title="Código de la pantalla de Ayuda">Código</a>
+                    </li>
+                </ul>
+                <ul class="body-tabs">
+                    <li id="final2">
+                        <img alt="Primer escena" src="images/monkyPingui/pantalla_ayuda.jpg">
+                    </li>
+                    <li id="codigo2">
+                        <pre class="brush: python">
+                            # -*- coding: UTF-8 -*-
+                            import pilasengine
+                            from menu import Logo
 
-            <p>La siguiente escena ya muestra el juego en sí, aparecen tres figuras de las cuales dos son Monky, el mono, y una tercera que puede variar de personaje (banana, cooperativista, etc). Pingui es manejado por el usuario y podrá moverse con las flechas del teclado, hacia la izquierda y derecha y salta. Esta colición será la que marca la opción elegida. </p>
+                            texto_ayuda = "Mové a Pingui para indentificar la figura diferente de tres o mas opciones dadas.  El nivel se acaba cuando aciertes todos los rounds. Si se te acaba el tiempo o te quedas sin vidas perdes!"
+
+                            #decode de texto para que se pueda usar acentos 
+                            texto_ayuda = texto_ayuda.decode('utf-8')
+
+                            class PantallaAyuda(pilasengine.escenas.Escena):
+                                #en esta pantalla se dan las instrucciones de juego
+                                #creación de la clase para la nueva pantalla a partir de la clase madre pilas.escena.Escena
+                                
+                                def iniciar(self):
+                                    #instanciamos el fondo deseado y creamos métodos para mostrar los textos de ayuda y el boton de volver
+                                    self.pilas.fondos.Tarde()
+                                    self.crear_texto_ayuda()
+                                    self.boton = self.pilas.interfaz.Boton("Volver al Inicio")
+                                    self.boton.y = -100
+                                    self.boton.conectar(self.regresa_inicio)
+                                    self.logo = Logo(self.pilas)
+
+                                def crear_texto_ayuda(self):
+                                    self.pilas.actores.Texto("Como se juega?:" , y = 50)
+                                    self.pilas.actores.Texto(texto_ayuda,  magnitud = 16, ancho = 600, y = -30)
+                                        
+                                def regresa_inicio(self):
+                                    #vuelve la escena de inicio y ejecuta el cambio de pantalla
+                                    self.pilas.escenas.EscenaMenu()
+                        </pre>
+                    </li>
+                </ul>
+            </div>
+
+            <p>La siguiente escena ya muestra el juego en sí, aparecen tres figuras de las cuales dos son Monky, el mono, y una tercera que puede variar de personaje (banana, cooperativista, etc). Pingui es manejado por el usuario y podrá moverse con las flechas del teclado, hacia la izquierda y derecha y saltar. Esta colisión será la que marca la opción elegida. </p>
+
             <p>TODO: poner imagen nivel 1</p>
-            <p>El siguiente nivel consta de la misma cantidad de figuras, con más repeticiones y menos tiempo.</p>
-            <p>TODO: poner imagen nivel 2 con algo que muestre mas velocidad etc</p>
-            <p>El tercer nivel tiene mas figuras, mismos tiempo y repeticiones que el anterior.</p>
 
-            <h3>Estructura utilizada</h3>
-            <img src="images/monkyPingui/diagrama.png" alt="Diagrama de flujo">
+            <p>El siguiente nivel consta de la misma cantidad de figuras, con más repeticiones y menos tiempo.</p>
+
+            <p>TODO: poner imagen nivel 2 con algo que muestre mas velocidad etc</p>
+            
           </section>
         </div>
 
@@ -71,5 +193,7 @@
             <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
           </footer>
         </div>
+        <script src="javascripts/main.js" type="text/javascript" charset="utf-8" async defer></script>
   </body>
+
 </html>
