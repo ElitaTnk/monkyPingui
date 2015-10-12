@@ -24,4 +24,3 @@ class Nivel(pilasengine.escenas.Escena):
 
     def hola_mundo(self):
         self.pilas.avisar("Fin del primer nivel")
-
