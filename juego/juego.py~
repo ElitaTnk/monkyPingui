@@ -4,6 +4,7 @@ import pilasengine
 import pilasengine.colores
 
 
+
 class Barra_tiempo(pilasengine.actores.Temporizador):
     #nueva barra de tiempo, con imagen y cambio de argumentos
     def iniciar(self):
@@ -21,13 +22,11 @@ class Nivel(pilasengine.escenas.Escena, pilasengine.actores.Mono,pilasengine.act
     def iniciar(self):
         self.pilas.fondos.Selva()
         self.tiempo = Barra_tiempo(self.pilas)
-        
         #Aparecen los personajes del primer nivel
         self.pilas.actores.Mono(x = 0 ,y = 0) 
         self.pilas.actores.Mono(x = -170)
         self.pilas.actores.Pingu(x = 170, y = -50)
         self.pilas.actores.Martian(x= 0,y = -170)
-        
         #se asigna un mensaje al final
         self.tiempo.ajustar(30, self.hola_mundo)
         self.tiempo.comenzar()
@@ -35,4 +34,14 @@ class Nivel(pilasengine.escenas.Escena, pilasengine.actores.Mono,pilasengine.act
 
     def hola_mundo(self):
         self.pilas.avisar("Fin del primer nivel")
+    
 
+
+
+   
+        
+        
+        
+       
+    
+    
