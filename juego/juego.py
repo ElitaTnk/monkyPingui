@@ -17,25 +17,36 @@ class Barra_tiempo(pilasengine.actores.Temporizador):
         self.texto.x = 250
         
 
-class Nivel(pilasengine.escenas.Escena, pilasengine.actores.Mono,pilasengine.actores.Pingu,pilasengine.actores.Martian ):
-    #escena del primer nivel. Se instancia la barra de tiempo y da inicio, 
-    def iniciar(self):
+class Nivel(pilasengine.escenas.Escena):
+        #escena del primer nivel. Se instancia la barra de tiempo,personajes y da inicio
+       def iniciar(self):
         self.pilas.fondos.Selva()
-        self.tiempo = Barra_tiempo(self.pilas)
-        
-        #Aparecen los personajes del primer nivel
-        self.pilas.actores.Mono(x = 0 ,y = 0) 
-        self.pilas.actores.Mono(x = -170)
-        self.pilas.actores.Pingu(x = 170, y = -50)
-        self.pilas.actores.Martian(x= 0,y = -170)
-        
+        self.tiempo = Barra_tiempo(self.pilas)      
         #se asigna un mensaje al final
         self.tiempo.ajustar(30, self.hola_mundo)
         self.tiempo.comenzar()
-          
+        self.personajes()
+        
 
-    def hola_mundo(self):
-        self.pilas.avisar("Fin del primer nivel")
+       def personajes(self): 
+           self.mono = self.pilas.actores.Mono()
+           self.mono.x = -180
+           self.mono1 = self.pilas.actores.Mono() 
+           self.mono1.x = 0
+           self.zanahoria = self.pilas.actores.Zanahoria()
+           self.zanahoria.x = 180 
+           self.nave = self.pilas.actores.NaveRoja()
+           self.nave.y = -180 
+                       
+       def hola_mundo(self):
+            self.pilas.avisar("Fin del primer nivel")   
+     
+  
+ 
+  
+              
+    
+   
     
 
 
