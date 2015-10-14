@@ -60,3 +60,34 @@ class Nivel(pilasengine.escenas.Escena):
         self.pilas.avisar("Fin del primer nivel")
         self.figuras.eliminar()
         self.pingui.eliminar()
+
+"""
+aciertos = []
+errores = []
+figuras = []
+
+def cuanto_toca_figura_bien(personaje, figura):
+    i.eliminar()
+    puntos.aumentar(10)
+    puntos.escala = 2
+    puntos.escala = [1], 0.2
+    puntos.rotacion = random.randint(30, 60)
+    puntos.rotacion = [0], 0.2
+
+#pilas.colisiones.agregar(vaca, items, cuanto_toca_item)
+
+
+def crear_set():
+    un_set = Set_figuras(pilas)
+    figuras.append(un_set)
+    return True
+
+pilas.tareas.agregar(3.3, crear_set)
+
+
+def cuanto_toca_figura_mal(vaca, enemigo):
+    vaca.perder()
+    enemigo.eliminar()
+
+#pilas.colisiones.agregar(vaca, enemigos, cuanto_toca_enemigo)
+"""
