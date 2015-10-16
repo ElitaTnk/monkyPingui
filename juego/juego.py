@@ -36,6 +36,8 @@ class Set_figuras():
         self.figura_mono2.escala = 0.9
         self.figura_random.escala = 1.4
 
+        self.figura_random.radio_de_colision = 100
+
     def eliminar(self):
         self.figura_mono1.eliminar()
         self.figura_mono2.eliminar()
@@ -47,19 +49,51 @@ class Nivel(pilasengine.escenas.Escena):
     def iniciar(self):
         self.pilas.fondos.Selva()
         self.tiempo = Barra_tiempo(self.pilas)
+
+        #puntaje
+        self.puntaje = self.pilas.actores.Puntaje(x = 190, y = 160)
         
+        #vidas
+        self.vidas = [self.pilas.actores.Estrella(x = -200, y = 200), self.pilas.actores.Estrella(x = -240, y = 200), self.pilas.actores.Estrella(x = -280, y = 200)]
+    
+        for element in self.vidas:
+            element.escala = 0.5
+
         #Aparecen los personajes del primer nivel
         self.pingui = self.pilas.actores.Pingu(x = 0, y = -170)
+        self.pingui.radio_de_colision = 100
         self.figuras = Set_figuras(self.pilas)
-        
+
+        self.figuras.figura_mono1.etiquetas.agregar("opcion_erronea")
+        self.figuras.figura_mono2.etiquetas.agregar("opcion_erronea")
+        self.figuras.figura_random.etiquetas.agregar("opcion_correcta")
+        self.pingui.etiquetas.agregar("pingui")
+
         #se asigna un mensaje al final
+
         self.tiempo.ajustar(30, self.hola_mundo)
         self.tiempo.comenzar()
+
+        #pingui no se salga de la pantalla
+        self.pingui.aprender(self.pilas.habilidades.LimitadoABordesDePantalla)
+
+        self.pilas.colisiones.agregar("pingui", "opcion_correcta", self.acierta)
+        self.pilas.colisiones.agregar("pingui", "opcion_erronea", self.erronea)
           
     def hola_mundo(self):
         self.pilas.avisar("Fin del primer nivel")
         self.figuras.eliminar()
         self.pingui.eliminar()
+
+
+    def acierta(self):
+        self.figuras.figura_random.eliminar()
+        self.puntaje.aumentar(10)
+
+    def erronea(self):
+        self.figuras.eliminar()
+        self.vidas[0]._destruir()
+
 
 """
 aciertos = []
