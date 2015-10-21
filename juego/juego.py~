@@ -56,6 +56,7 @@ class Set_figuras():
         self.figura_mono1.etiquetas.agregar("opcion_erronea") 
         self.figura_mono2.etiquetas.agregar("opcion_erronea")
         self.figura_random.etiquetas.agregar("opcion_correcta")
+        
 
 
 class Nivel(pilasengine.escenas.Escena):
@@ -97,33 +98,42 @@ class Nivel(pilasengine.escenas.Escena):
         self.pilas.colisiones.agregar("pingui", "opcion_correcta", self.acierta)
         self.pilas.colisiones.agregar("pingui", "opcion_erronea", self.erronea)
         
-        
-              
+             
         self.pilas.tareas.condicional(3, self.refrescar_figuras)
         self.pilas.tareas.condicional(1, self.chequear_vidas)
-        
-    # se crea la variable comparar_puntaje, que toma el valor actual de puntaje
-    #conexion al siguiente nivel
+  
+
+  
+ # se crea la variable comparar_puntaje, que toma el valor actual de puntaje y se hace la comparacion
+    #si el puntaje es igual a 5 puntos entonces puede pasar al siguiente nivel
     def tope_puntaje(self):
         comparar_puntaje = self.puntaje.obtener()
         if comparar_puntaje == 5:
             self.pilas.avisar("pasaste al siguiente nivel!!!")
+            self.tiempo.detener()
+            self.pingui.eliminar()  
+            self.vidas[0].eliminar()
+            self.eliminar_set_figuras()
+            self.nivel_2 = self.Nivel_2(self.pilas)
             return True
-            
+           
   
+  
+    
     def eliminar_set_figuras(self):
         """elimina el set entero de figuras"""
         if self.figuras != None:
             self.figuras.eliminar()
             self.figuras = None
-
-       
+            
+    
     def termina_el_tiempo(self):
         """Se ejecuta cuando el tiempo llega a 0"""
         self.pilas.avisar("Se acabo el tiempo, Fin del primer nivel")
         self.eliminar_set_figuras()
         self.pingui.eliminar()
-
+            
+   
 
     def acierta(self):
         """Efecto de la colision correcta"""
@@ -138,6 +148,7 @@ class Nivel(pilasengine.escenas.Escena):
             self.eliminar_set_figuras()
             self.vidas[0].eliminar()
             self.vidas.pop(0)
+
 
 
     def refrescar_figuras(self):
@@ -173,6 +184,13 @@ class Nivel(pilasengine.escenas.Escena):
         else:
             return True
             
-            
-            
-            
+
+class Nivel_2(Nivel,pilasengine.escenas.Escena):  
+    
+    def inicio (self):
+        self.iniciar()
+               
+
+
+
+                     
