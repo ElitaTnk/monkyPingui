@@ -70,8 +70,10 @@ class Nivel(pilasengine.escenas.Escena):
         self.tiempo = Barra_tiempo(self.pilas)
         self.tiempo.ajustar(30, self.termina_el_tiempo)
         self.tiempo.comenzar()
-
+    
+    
         #puntaje
+        
         self.puntaje = self.pilas.actores.Puntaje(x = 10, y = 200)
         self.texto = self.pilas.actores.Texto("Puntaje:")
         self.texto.color = pilasengine.colores.negro
@@ -96,10 +98,18 @@ class Nivel(pilasengine.escenas.Escena):
         self.pilas.colisiones.agregar("pingui", "opcion_erronea", self.erronea)
         
         
-
+              
         self.pilas.tareas.condicional(3, self.refrescar_figuras)
         self.pilas.tareas.condicional(1, self.chequear_vidas)
         
+    # se crea la variable comparar_puntaje, que toma el valor actual de puntaje
+    #conexion al siguiente nivel
+    def tope_puntaje(self):
+        comparar_puntaje = self.puntaje.obtener()
+        if comparar_puntaje == 5:
+            self.pilas.avisar("pasaste al siguiente nivel!!!")
+            return True
+            
   
     def eliminar_set_figuras(self):
         """elimina el set entero de figuras"""
@@ -118,9 +128,10 @@ class Nivel(pilasengine.escenas.Escena):
     def acierta(self):
         """Efecto de la colision correcta"""
         if self.figuras != None:
-            self.puntaje.aumentar(10)
+            self.puntaje.aumentar(1)
             self.eliminar_set_figuras()
-#######
+            self.tope_puntaje()
+
     def erronea(self):
         """Efecto de la colision incorrecta"""
         if self.figuras != None:
@@ -164,4 +175,4 @@ class Nivel(pilasengine.escenas.Escena):
             
             
             
-#class nivel_2(pilasengine.escenas.Escena, Nivel):            
+            
