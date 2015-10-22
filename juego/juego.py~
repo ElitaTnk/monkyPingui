@@ -67,9 +67,8 @@ class Nivel(pilasengine.escenas.Escena):
 
     def iniciar(self):
         self.pilas.fondos.Selva()
-
         self.tiempo = Barra_tiempo(self.pilas)
-        self.tiempo.ajustar(30, self.termina_el_tiempo)
+        self.tiempo.ajustar(4, self.termina_el_tiempo)
         self.tiempo.comenzar()
     
     
@@ -102,21 +101,6 @@ class Nivel(pilasengine.escenas.Escena):
         self.pilas.tareas.condicional(3, self.refrescar_figuras)
         self.pilas.tareas.condicional(1, self.chequear_vidas)
   
-
-  
- # se crea la variable comparar_puntaje, que toma el valor actual de puntaje y se hace la comparacion
-    #si el puntaje es igual a 5 puntos entonces puede pasar al siguiente nivel
-    def tope_puntaje(self):
-        comparar_puntaje = self.puntaje.obtener()
-        if comparar_puntaje == 5:
-            self.pilas.avisar("pasaste al siguiente nivel!!!")
-            self.tiempo.detener()
-            self.pingui.eliminar()  
-            self.vidas[0].eliminar()
-            self.eliminar_set_figuras()
-            self.nivel_2 = self.Nivel_2(self.pilas)
-            return True
-           
   
   
     
@@ -129,10 +113,14 @@ class Nivel(pilasengine.escenas.Escena):
     
     def termina_el_tiempo(self):
         """Se ejecuta cuando el tiempo llega a 0"""
-        self.pilas.avisar("Se acabo el tiempo, Fin del primer nivel")
+        self.tiempo.detener()
+        self.textoFin = self.pilas.actores.Texto("FIN DEL PRIMER NIVEL")
         self.eliminar_set_figuras()
-        self.pingui.eliminar()
-            
+        self.pingui.eliminar()        
+        self.siguiente = self.pilas.interfaz.Boton("pasar al siguiente nivel")
+        self.siguiente.y = -200
+        self.siguiente.conectar(self.pasar_siguiente)
+                  
    
 
     def acierta(self):
@@ -140,7 +128,6 @@ class Nivel(pilasengine.escenas.Escena):
         if self.figuras != None:
             self.puntaje.aumentar(1)
             self.eliminar_set_figuras()
-            self.tope_puntaje()
 
     def erronea(self):
         """Efecto de la colision incorrecta"""
@@ -184,13 +171,25 @@ class Nivel(pilasengine.escenas.Escena):
         else:
             return True
             
-
-class Nivel_2(Nivel,pilasengine.escenas.Escena):  
+            
+#siguiente nivel
+    def pasar_siguiente(self):
+        self.pilas.escenas.Nivel_2()
     
-    def inicio (self):
+class Nivel_2(Nivel,pilasengine.escenas.Escena):
+    def cambios (self):
         self.iniciar()
-               
-
-
-
-                     
+ # se crea la variable comparar_puntaje, que toma el valor actual de puntaje y se hace la comparacion
+ #si el puntaje es igual a 5 puntos entonces puede pasar al siguiente nivel
+ #def transfe_puntaje(self):
+    # puntaje_actual = self.puntaje.obtener()
+      #  if comparar_puntaje == 5:
+       #     self.pilas.avisar("pasaste al siguiente nivel!!!")
+        #    self.tiempo.detener()
+         #   self.pingui.eliminar()  
+          #  self.vidas[0].eliminar()
+           # self.eliminar_set_figuras()
+            #self.nivel_2 = self.Nivel_2(self.pilas)
+            #return True
+           
+                            
