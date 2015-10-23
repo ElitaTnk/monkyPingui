@@ -60,22 +60,36 @@ class Set_figuras():
 
 
 class Nivel(pilasengine.escenas.Escena):
-    """escena del primer nivel.
-        Se instancia la barra de tiempo y da inicio.
-        Se generan los personajes con sus caracteristicas modificadas para el juego.
-        Se vinculan las colisiones y las tareas""" 
+#escena del primer nivel.
+#Se instancia la barra de tiempo y da inicio.
+#Se generan los personajes con sus caracteristicas modificadas para el juego.
+#Se vinculan las colisiones y las tareas    
 
-    def iniciar(self):
-        self.pilas.fondos.Selva()
+
+
+
+#Se crea la funcion "Time" que permite ajustar el valor de tiempo# 
+#En cada Nivel#
+    def time(self):
         self.tiempo = Barra_tiempo(self.pilas)
-        self.tiempo.ajustar(4, self.termina_el_tiempo)
+        self.tiempo.ajustar(15, self.termina_el_tiempo)
         self.tiempo.comenzar()
-    
-    
-        #puntaje
         
+#Se crea la funcion "back_g" para la creacion de fondos en cada nivel#       
+    def back_g(self):
+        self.prueba = self.pilas.fondos.Selva()
+      
+#Se generan las condiciones iniciales del nivel 1 #                   
+    def iniciar(self):
+        self.nuevo = self.back_g()
+        self.tiempo1= self.time()
+        self.puntos1 = self.puntos_totales()
+        
+#Puntaje
+
         self.puntaje = self.pilas.actores.Puntaje(x = 10, y = 200)
         self.texto = self.pilas.actores.Texto("Puntaje:")
+        self.puntt = self.puntaje.obtener()
         self.texto.color = pilasengine.colores.negro
         self.texto.y = 200
         self.texto.x = -50
@@ -139,6 +153,7 @@ class Nivel(pilasengine.escenas.Escena):
 
 
     def refrescar_figuras(self):
+        
         """Si hubo una colision y hay tiempo vuelve a generar las figuras"""
         if self.figuras == None:
             self.figuras = Set_figuras(self.pilas)
@@ -175,10 +190,31 @@ class Nivel(pilasengine.escenas.Escena):
 #siguiente nivel
     def pasar_siguiente(self):
         self.pilas.escenas.Nivel_2()
-    
+#Clase para el Nivel 2 que hereda caracteristicas de "Nivel"    
 class Nivel_2(Nivel,pilasengine.escenas.Escena):
-    def cambios (self):
+    
+#Se define el fondo del nivel 2, sobre-escribe fondo en nivel 1
+    def back_g(self):
+        self.prueba = self.pilas.fondos.Volley()
+#Llamada al metodo "iniciar" de la clase "Nivel" 
+    def nivel2 (self):
         self.iniciar()
+#Define el tiempo inicial para Nivel 2, sobre-escribe tiempo de "Nivel"
+    def time(self):
+        self.tiempo = Barra_tiempo(self.pilas)
+        self.tiempo.ajustar(40,self.termina_el_tiempo)
+        self.tiempo.comenzar()
+    
+    
+                
+
+        
+
+        
+        
+        
+    
+            
  # se crea la variable comparar_puntaje, que toma el valor actual de puntaje y se hace la comparacion
  #si el puntaje es igual a 5 puntos entonces puede pasar al siguiente nivel
  #def transfe_puntaje(self):
