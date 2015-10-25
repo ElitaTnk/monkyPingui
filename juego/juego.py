@@ -3,16 +3,16 @@
 import pilasengine
 import pilasengine.colores
 import random
-from threading import Timer
 
-
+cantidad_puntos = 0
+cantidad_vidas = 3
 
 class Barra_tiempo(pilasengine.actores.Temporizador):
-    #nueva barra de tiempo, con imagen y cambio de argumentos
+    """ nueva barra de tiempo, con imagen y cambio de argumentos""" 
     def iniciar(self):
         self.imagen = "data/152-clock.png"
         self.texto = self.pilas.actores.Texto("0")
-        self.texto.color = pilasengine.colores.negro
+        self.texto.color = pilasengine.colores.verde
         self.y = 160
         self.x = 260
         self.texto.y = 100
@@ -35,8 +35,6 @@ class Set_figuras():
         self.figura_mono2 = self.pilas.actores.Mono(self.posiciones[1],y = 80)
         self.figura_random = self.figuras_distintas[1](self.posiciones[2],y = 80) 
         
-        
-       
         self.figura_mono1.escala = 0.9
         self.figura_mono2.escala = 0.9
         self.figura_random.escala = 1.4
@@ -60,46 +58,41 @@ class Set_figuras():
 
 
 class Nivel(pilasengine.escenas.Escena):
-#escena del primer nivel.
-#Se instancia la barra de tiempo y da inicio.
-#Se generan los personajes con sus caracteristicas modificadas para el juego.
-#Se vinculan las colisiones y las tareas    
+    """escena del primer nivel.
+    Se instancia la barra de tiempo y da inicio.
+    Se generan los personajes con sus caracteristicas modificadas para el juego.
+    Se vinculan las colisiones y las tareas"""    
 
-
-
-
-#Se crea la funcion "Time" que permite ajustar el valor de tiempo# 
-#En cada Nivel#
-    def time(self):
+    def iniciar(self, tiempo):
+        self.fondo = self.pilas.fondos.Selva()
         self.tiempo = Barra_tiempo(self.pilas)
-        self.tiempo.ajustar(15, self.termina_el_tiempo)
+        self.tiempo.ajustar(tiempo, self.termina_el_tiempo)
         self.tiempo.comenzar()
         
-#Se crea la funcion "back_g" para la creacion de fondos en cada nivel#       
-    def back_g(self):
-        self.prueba = self.pilas.fondos.Selva()
-      
-#Se generan las condiciones iniciales del nivel 1 #                   
-    def iniciar(self):
-        self.nuevo = self.back_g()
-        self.tiempo1= self.time()
-       
-#Puntaje
-
+        global cantidad_puntos
         self.puntaje = self.pilas.actores.Puntaje(x = 10, y = 200)
+        self.puntaje.definir(cantidad_puntos)
         self.texto = self.pilas.actores.Texto("Puntaje:")
-        self.puntt = self.puntaje.obtener()
         self.texto.color = pilasengine.colores.negro
         self.texto.y = 200
         self.texto.x = -50
+
+        self.sonido_de_error = self.pilas.sonidos.cargar('data/pedito.wav')
+        self.sonido_de_acierto = self.pilas.sonidos.cargar('data/acierto.wav')
+        self.sonido_de_perder = self.pilas.sonidos.cargar('data/perdedor.wav')
         
         #vidas
-        self.vidas = [self.pilas.actores.Estrella(x = -200, y = 200), self.pilas.actores.Estrella(x = -240, y = 200), self.pilas.actores.Estrella(x = -280, y = 200)]
-    
-        for element in self.vidas:
-            element.escala = 0.5
+        global cantidad_vidas
+        self.vidas_posiciones = [-200, -240, -280]
+        self.vidas = (self.pilas.actores.Estrella()* cantidad_vidas)
 
-        #Aparecen los personajes del primer nivel
+        #itero sobre self.vidas que es un grupo, luego por cada elemento de ese grupo asigno las posciones de la lista
+        for element, pos in zip(self.vidas, self.vidas_posiciones):
+            element.escala = 0.5
+            element.y = 200
+            element.x = pos
+
+        #Aparecen los personajes
         self.figuras = Set_figuras(self.pilas)
         self.pingui = self.pilas.actores.Pingu(x = 0, y = -170)
         self.pingui.radio_de_colision = 50
@@ -109,13 +102,16 @@ class Nivel(pilasengine.escenas.Escena):
 
         self.pilas.colisiones.agregar("pingui", "opcion_correcta", self.acierta)
         self.pilas.colisiones.agregar("pingui", "opcion_erronea", self.erronea)
-        
-             
+
         self.pilas.tareas.condicional(3, self.refrescar_figuras)
         self.pilas.tareas.condicional(1, self.chequear_vidas)
   
-  
-  
+    def aumentar_puntaje(self):
+        global cantidad_puntos     #accedemos a la variable global
+        
+        self.puntaje.aumentar(1)
+        self.animacion_textoEscalar(self.puntaje)
+        cantidad_puntos += 1       #es importante tambien aumentar la variable
     
     def eliminar_set_figuras(self):
         """elimina el set entero de figuras"""
@@ -123,108 +119,98 @@ class Nivel(pilasengine.escenas.Escena):
             self.figuras.eliminar()
             self.figuras = None
             
-    
     def termina_el_tiempo(self):
         """Se ejecuta cuando el tiempo llega a 0"""
-        self.tiempo.detener()
         self.textoFin = self.pilas.actores.Texto("FIN DEL PRIMER NIVEL")
-        self.eliminar_set_figuras()
-        self.pingui.eliminar()        
+        self.pingui.eliminar()      
         self.siguiente = self.pilas.interfaz.Boton("pasar al siguiente nivel")
         self.siguiente.y = -200
         self.siguiente.conectar(self.pasar_siguiente)
-                  
-   
 
     def acierta(self):
         """Efecto de la colision correcta"""
         if self.figuras != None:
-            self.puntaje.aumentar(1)
+            self.aumentar_puntaje()
             self.eliminar_set_figuras()
+            self.sonido_de_acierto.reproducir()
 
     def erronea(self):
         """Efecto de la colision incorrecta"""
         if self.figuras != None:
             self.eliminar_set_figuras()
             self.vidas[0].eliminar()
-            self.vidas.pop(0)
-
-
+            self.sonido_de_error.reproducir()
+            global cantidad_vidas
+            cantidad_vidas-= 1
 
     def refrescar_figuras(self):
-        
-        """Si hubo una colision y hay tiempo vuelve a generar las figuras"""
+        """Si hubo una colision y el tiempo no es ni 0 ni 1 ~ porque cuando se acaba se pone en 1 ~ vuelve a generar las figuras"""
         if self.figuras == None:
             self.figuras = Set_figuras(self.pilas)
 
-        if self.tiempo.tiempo != 0 and self.chequear_vidas() == True:
+        if self.tiempo.tiempo != 0 and self.tiempo.tiempo != 1 and self.chequear_vidas() == True:
             return True
 
     def regresa_inicio(self):
-        #vuelve la escena de inicio y ejecuta el cambio de pantalla
         self.pilas.escenas.EscenaMenu()
 
-    def animacion_textoPerder(self, texto):
-        self.textoFin.escala = 2
-        self.textoFin.escala = [1], 1.5
+    def animacion_textoEscalar(self, texto):
+        texto.escala = 2
+        texto.escala = [1], 1.5
 
     def chequear_vidas(self):
+        """Tarea que se fija la condicion de las vidas. 
+        Si las vidas son igual a 0 entonces ejecuta una serie de tareas para indicar que se acabo el juego.
+        Si aun hay vidas retorna True para que la tarea siga ejecutandose.
+        """
+
+        if self.tiempo.tiempo < 10:
+            self.tiempo.texto.color = pilasengine.colores.rojo
+
         if len(self.vidas) == 0:
             self.textoFin = self.pilas.actores.Texto("Perdiste!!!")
-            
-            self.animacion_textoPerder(self.textoFin)
+            self.textoFin.color = pilasengine.colores.rojo
+            self.animacion_textoEscalar(self.textoFin)
             self.boton = self.pilas.interfaz.Boton("Volver al Inicio")
             self.boton.y = -100
             self.boton.conectar(self.regresa_inicio)
             self.eliminar_set_figuras()
             self.tiempo.detener()
             self.pingui.eliminar()
-            self.puntaje.eliminar()
+            self.sonido_de_perder.reproducir()
+            global cantidad_vidas
+            cantidad_vidas = 3
             return False
 
         else:
             return True
             
-            
-#siguiente nivel
     def pasar_siguiente(self):
         self.pilas.escenas.Nivel_2()
-#Clase para el Nivel 2 que hereda caracteristicas de "Nivel"    
-class Nivel_2(Nivel,pilasengine.escenas.Escena):
-    
-#Se define el fondo del nivel 2, sobre-escribe fondo en nivel 1
-    def back_g(self):
-        self.prueba = self.pilas.fondos.Volley()
-#Llamada al metodo "iniciar" de la clase "Nivel" 
-    def nivel2 (self):
-        self.iniciar()
-#Define el tiempo inicial para Nivel 2, sobre-escribe tiempo de "Nivel"
-    def time(self):
-        self.tiempo = Barra_tiempo(self.pilas)
-        self.tiempo.ajustar(40,self.termina_el_tiempo)
-        self.tiempo.comenzar()
-    
-    
-                
 
-        
 
+class Nivel_2(Nivel):
+    """ Esta clase hereda de Nivel por lo que solo sobreescribimos las cosas que cambian como el fondo y algunas acciones"""
+    def iniciar(self):
+        Nivel.iniciar(self, 20)
+        self.fondo = self.pilas.fondos.Volley()
+        self.sonido_de_ganar = self.pilas.sonidos.cargar('data/aplausos.wav')
+
+    def termina_el_tiempo(self):
+        self.textoFin = self.pilas.actores.Texto("FIN DEL jUEGO")
+        self.pingui.eliminar()        
+        self.siguiente = self.pilas.interfaz.Boton("Ver resultados")
+        self.siguiente.y = -200
+        self.siguiente.conectar(self.ver_resultados)
+        self.sonido_de_ganar.reproducir()
         
-        
-        
-    
-            
- # se crea la variable comparar_puntaje, que toma el valor actual de puntaje y se hace la comparacion
- #si el puntaje es igual a 5 puntos entonces puede pasar al siguiente nivel
- #def transfe_puntaje(self):
-    # puntaje_actual = self.puntaje.obtener()
-      #  if comparar_puntaje == 5:
-       #     self.pilas.avisar("pasaste al siguiente nivel!!!")
-        #    self.tiempo.detener()
-         #   self.pingui.eliminar()  
-          #  self.vidas[0].eliminar()
-           # self.eliminar_set_figuras()
-            #self.nivel_2 = self.Nivel_2(self.pilas)
-            #return True
-           
-                            
+    def ver_resultados(self):
+        self.pilas.escenas.Resultados()
+
+
+class Resultados(pilasengine.escenas.Escena):
+    def iniciar(self):
+        self.sonido_de_festejo = self.pilas.sonidos.cargar('data/festejo.wav')
+        self.fondo = self.pilas.fondos.Galaxia()
+        self.texto = self.pilas.actores.Texto("Hola")
+        self.sonido_de_festejo.reproducir()
