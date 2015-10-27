@@ -31,9 +31,9 @@ class Set_figuras():
         random.shuffle(self.posiciones)
         random.shuffle(self.figuras_distintas)
 
-        self.figura_mono1 = self.pilas.actores.Mono(self.posiciones[0],y = 80)
-        self.figura_mono2 = self.pilas.actores.Mono(self.posiciones[1],y = 80)
-        self.figura_random = self.figuras_distintas[1](self.posiciones[2],y = 80)
+        self.figura_mono1 = self.pilas.actores.Mono(self.posiciones[0],y = 70)
+        self.figura_mono2 = self.pilas.actores.Mono(self.posiciones[1],y = 70)
+        self.figura_random = self.figuras_distintas[1](self.posiciones[2],y = 70)
 
         self.figura_mono1.escala = 0.9
         self.figura_mono2.escala = 0.9
@@ -64,7 +64,8 @@ class Nivel(pilasengine.escenas.Escena):
     Se vinculan las colisiones y las tareas"""
 
     def iniciar(self, tiempo):
-        self.fondo = self.pilas.fondos.Selva()
+        self.fondo = self.pilas.fondos.Fondo()
+        self.fondo.imagen = self.pilas.imagenes.cargar("data/granja.png")
         self.tiempo = Barra_tiempo(self.pilas)
         self.tiempo.ajustar(tiempo, self.termina_el_tiempo)
         self.tiempo.comenzar()
@@ -123,9 +124,16 @@ class Nivel(pilasengine.escenas.Escena):
         """Se ejecuta cuando el tiempo llega a 0"""
         self.textoFin = self.pilas.actores.Texto("FIN DEL PRIMER NIVEL")
         self.pingui.eliminar()
-        self.siguiente = self.pilas.interfaz.Boton("pasar al siguiente nivel")
-        self.siguiente.y = -200
-        self.siguiente.conectar(self.pasar_siguiente)
+        """si no te mueves te da la opcion de regresar al inicio. si hay puntaje pasas al siguiente nivel"""
+        if self.puntaje.obtener() == 0:
+            self.pilas.avisar ("NO TE MOVISTE... PERDISTE!!!!")
+            self.boton = self.pilas.interfaz.Boton("Volver al Inicio")
+            self.boton.conectar(self.regresa_inicio)
+            self.boton.y = -100
+        else:
+            self.siguiente = self.pilas.interfaz.Boton("pasar al siguiente nivel")
+            self.siguiente.y = -200
+            self.siguiente.conectar(self.pasar_siguiente)
 
     def acierta(self):
         """Efecto de la colision correcta"""
@@ -192,7 +200,7 @@ class Nivel(pilasengine.escenas.Escena):
 class Nivel_2(Nivel):
     """ Esta clase hereda de Nivel por lo que solo sobreescribimos las cosas que cambian como el fondo y algunas acciones"""
     def iniciar(self):
-        Nivel.iniciar(self, 10)
+        Nivel.iniciar(self, 5)
         self.fondo = self.pilas.fondos.Volley()
         self.sonido_de_ganar = self.pilas.sonidos.cargar('data/aplausos.wav')
 
@@ -211,22 +219,25 @@ class Nivel_2(Nivel):
 
 class Resultados(pilasengine.escenas.Escena):
     def iniciar(self):
+
         global cantidad_puntos
         self.cantidad = str (cantidad_puntos)
 
         self.sonido_de_festejo = self.pilas.sonidos.cargar('data/festejo.wav')
         self.fondo = self.pilas.fondos.Fondo()
-        self.fondo.imagen = self.pilas.imagenes.cargar("data/pinguinos.png")
+        self.fondo.imagen = self.pilas.imagenes.cargar("data/stars.png")
+        self.fondo.imagen.repetir_vertical = True
+        self.fondo.imagen.repetir_horizontal = True
 
-        self.texto_puntaje = self.pilas.actores.Texto("Putaje Total :")
-        self.texto_puntaje.y = -180
-        self.texto_puntaje.escala = 1
-
+        self.texto_puntaje = self.pilas.actores.Texto("Puntaje Total : ")
+        self.texto_puntaje.y = 50
+        self.texto_puntaje.escala = 2
+        self.texto_puntaje.color = pilasengine.colores.rojo
 
         self.texto_cantidad = self.pilas.actores.Texto(self.cantidad)
-        self.texto_cantidad.y = -180
-        self.texto_cantidad.x = 100
-        self.texto_cantidad.escala = 1
-
+        self.texto_cantidad.y = 0
+        self.texto_cantidad.x = 0
+        self.texto_cantidad.escala = 2
+        self.texto_cantidad.color = pilasengine.colores.rojo
 
         self.sonido_de_festejo.reproducir()
