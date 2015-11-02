@@ -250,6 +250,7 @@ class Resultados(pilasengine.escenas.Escena):
 
         self.boton = self.pilas.interfaz.Boton("Volver al Inicio")
         self.boton.conectar(self.regresa_inicio)
+        self.boton.y = 100
 
         self.sonido_de_festejo.reproducir()
 
