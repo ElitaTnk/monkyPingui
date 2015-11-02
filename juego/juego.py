@@ -122,15 +122,20 @@ class Nivel(pilasengine.escenas.Escena):
 
     def termina_el_tiempo(self):
         """Se ejecuta cuando el tiempo llega a 0"""
-        self.textoFin = self.pilas.actores.Texto("FIN DEL PRIMER NIVEL")
         self.pingui.eliminar()
+
         """si no te mueves te da la opcion de regresar al inicio. si hay puntaje pasas al siguiente nivel"""
         if self.puntaje.obtener() == 0:
             self.pilas.avisar ("NO TE MOVISTE... PERDISTE!!!!")
             self.boton = self.pilas.interfaz.Boton("Volver al Inicio")
             self.boton.conectar(self.regresa_inicio)
             self.boton.y = -100
+            global cantidad_puntos
+            cantidad_puntos = 0
+            global cantidad_vidas
+            cantidad_vidas = 3
         else:
+            self.textoFin = self.pilas.actores.Texto("FIN DEL PRIMER NIVEL")
             self.siguiente = self.pilas.interfaz.Boton("pasar al siguiente nivel")
             self.siguiente.y = -200
             self.siguiente.conectar(self.pasar_siguiente)
@@ -186,6 +191,8 @@ class Nivel(pilasengine.escenas.Escena):
             self.tiempo.detener()
             self.pingui.eliminar()
             self.sonido_de_perder.reproducir()
+            global cantidad_puntos
+            cantidad_puntos = 0
             global cantidad_vidas
             cantidad_vidas = 3
             return False
@@ -205,7 +212,7 @@ class Nivel_2(Nivel):
         self.sonido_de_ganar = self.pilas.sonidos.cargar('data/aplausos.wav')
 
     def termina_el_tiempo(self):
-        self.textoFin = self.pilas.actores.Texto("FIN DEL jUEGO")
+        self.textoFin = self.pilas.actores.Texto("FIN DEL JUEGO")
         self.pingui.eliminar()
         self.siguiente = self.pilas.interfaz.Boton("Ver resultados")
         self.siguiente.y = -200
@@ -222,9 +229,10 @@ class Resultados(pilasengine.escenas.Escena):
 
         global cantidad_puntos
         self.cantidad = str (cantidad_puntos)
+        
 
         self.sonido_de_festejo = self.pilas.sonidos.cargar('data/festejo.wav')
-        self.fondo = self.pilas.fondos.Fondo()
+        self.fondo = self.pilas.fondos.Galaxia(dy=-5)
         self.fondo.imagen = self.pilas.imagenes.cargar("data/stars.png")
         self.fondo.imagen.repetir_vertical = True
         self.fondo.imagen.repetir_horizontal = True
@@ -240,4 +248,15 @@ class Resultados(pilasengine.escenas.Escena):
         self.texto_cantidad.escala = 2
         self.texto_cantidad.color = pilasengine.colores.rojo
 
+        self.boton = self.pilas.interfaz.Boton("Volver al Inicio")
+        self.boton.conectar(self.regresa_inicio)
+
         self.sonido_de_festejo.reproducir()
+
+        cantidad_puntos = 0
+
+        global cantidad_vidas
+        cantidad_vidas = 3
+
+    def regresa_inicio(self):
+        self.pilas.escenas.EscenaMenu()
