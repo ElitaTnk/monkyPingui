@@ -10,10 +10,10 @@ class Barra_tiempo(pilasengine.actores.Temporizador):
         self.imagen = "data/imagenes/152-clock.png"
         self.texto = self.pilas.actores.Texto("0")
         self.texto.color = pilasengine.colores.verde
-        self.y = 160
+        self.y = 185
         self.x = 260
-        self.texto.y = 100
-        self.texto.x = 250
+        self.texto.y = 120
+        self.texto.x = 255
 
 class Set_figuras():
     """Clase que permite generar dos figuras iguales y una variable distinta"""
@@ -63,8 +63,10 @@ class Nivel(pilasengine.escenas.Escena):
     def iniciar(self, tiempo, cantidad_vidas, cantidad_puntos):
         self.cantidad_puntos = cantidad_puntos
         self.cantidad_vidas = cantidad_vidas
+
         self.fondo = self.pilas.fondos.Fondo()
         self.fondo.imagen = self.pilas.imagenes.cargar("data/imagenes/granja.png")
+
         self.tiempo = Barra_tiempo(self.pilas)
         self.tiempo.ajustar(tiempo, self.termina_el_tiempo)
         self.tiempo.comenzar()
