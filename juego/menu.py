@@ -6,7 +6,7 @@ class Logo(pilasengine.actores.Actor):
     #creacion de clase Logo, para ser utilizada en varias escenas
     def iniciar(self):
         #importamos logo desde carpeta
-        self.imagen = "data/logo.png"
+        self.imagen = "data/imagenes/logo.png"
         self.y = 150
 
 class EscenaMenu(pilasengine.escenas.Escena):
@@ -19,6 +19,9 @@ class EscenaMenu(pilasengine.escenas.Escena):
         self.menu_inicial()
         self.logo = Logo(self.pilas)
         self.animacion_entrada_texto(self.logo)
+        self.musica_fondo = self.pilas.musica.cargar('data/musica/POL-hello-sunshine-short.wav')
+        self.musica_fondo.detener()
+        self.musica_fondo.reproducir(repetir = True)
 
     def animacion_entrada_texto(self, texto):
         texto.escala = 2
@@ -35,13 +38,16 @@ class EscenaMenu(pilasengine.escenas.Escena):
 
     def ir_pantalla_ayuda(self):
         #lleva a la escena de ayuda
+        self.musica_fondo.detener()
         self.pilas.escenas.PantallaAyuda()
 
     def comenzar_juego(self):
         #lleva a la escena del juego en si mismo
-        self.pilas.escenas.Nivel(4)
+        self.musica_fondo.detener()
+        self.pilas.escenas.Nivel(4, 3, 0)
 
     def salir_juego(self):
         #sale del juego
+        self.musica_fondo.detener()
         self.pilas.terminar()
 

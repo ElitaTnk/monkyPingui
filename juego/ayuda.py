@@ -21,7 +21,7 @@ class PantallaAyuda(pilasengine.escenas.Escena):
         self.logo = Logo(self.pilas)
 
     def crear_texto_ayuda(self):
-        self.pilas.actores.Texto("Como se juega?:" , y = 50)
+        self.pilas.actores.Texto("Como se juega?:" , y = 50, fuente = "data/Bangers.ttf")
         self.pilas.actores.Texto(texto_ayuda,  magnitud = 16, ancho = 600, y = -30)
             
     def regresa_inicio(self):
