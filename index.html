@@ -45,12 +45,12 @@
 
             <h3><a id="en-qué-consiste" class="anchor" href="#en-qu%C3%A9-consiste" aria-hidden="true"><span class="octicon octicon-link"></span></a>En qué consiste</h3>
 
-            <p>El usuario será el personaje "Pingui", y tendrá que indentificar la figura diferente de tres o más opciones dadas.<br/>
-            El nivel se acaba una vez pasado el tiempo dado, o cuando el usuario acierta todas las veces o pierde todas las veces. </p>
+            <p>El usuario será el personaje "Pingui", y tendrá que indentificar la figura diferente de tres opciones dadas.<br/>
+            El nivel se acaba una vez pasado el tiempo dado, o cuando el usuario a pierde todas las veces. </p>
 
             <h2>Estructura a utilizar</h2>
             <p>El código estrá dividido en distintos módulos, siendo el archivo principal donde se ejecutan las llamadas necesarias e importaciones el llamado <strong>monkyPingui.py</strong>.</p>
-            <p>Luego, el juego se divide en tres grandes módulos: <em>menu.py</em>, <em>ayuda.py</em> y <em>juego.py</em>.</p>
+            <p>Luego, el juego se divide en cuatro grandes módulos: <em>menu.py</em>, <em>ayuda.py</em>, <em>juego.py</em> y resultados.py.</p>
             <img src="images/monkyPingui/diagrama.png" alt="Diagrama de flujo">
 
             <h3><a id="planeamiento-del-juego" class="anchor" href="#planeamiento-del-juego" aria-hidden="true"><span class="octicon octicon-link"></span></a>Planeamiento del juego</h3>
@@ -175,11 +175,21 @@
                 </ul>
             </div>
 
-            <p>La siguiente escena ya muestra el juego en sí, aparecen tres figuras de las cuales dos son Monky, el mono, y una tercera que puede variar de personaje (banana, cooperativista, etc). Pingui es manejado por el usuario y podrá moverse con las flechas del teclado, hacia la izquierda y derecha y saltar. Esta colisión será la que marca la opción elegida. </p>
+            <p>La siguiente escena ya muestra el juego en sí, aparecen tres figuras de las cuales dos son Monky, el mono, y una tercera que puede variar de personaje (tortuga, zanahoria o aceituna). Pingui es manejado por el usuario y podrá moverse con las flechas del teclado, hacia la izquierda y derecha y saltar. Esta colisión será la que marca la opción elegida. </p>
 
             <img alt="Primer escena" src="images/monkyPingui/pantalla_nivel1.jpg">
 
-            <p>El siguiente nivel consta de la misma cantidad de figuras, con más repeticiones y menos tiempo.</p>
+            <p>El siguiente nivel consta de la misma cantidad de figuras pero con menos tiempo.</p>
+
+            <p>Finalmente cuando se termina el juego, lleva a la pantalla de resultado final, donde se comunica el puntaje final obtenido y se permite el ingreso de texto al usuario para que ponga su nombre.</p>
+
+            <img alt="Primer escena" src="images/monkyPingui/pantalla_nivel1.jpg">
+
+            <p>Una vez ingresado y habiendo pulsado "ver ranking" se presenta la pantalla de ranking final, que lista las 10 mejores jugadas de la ejecución actual del programa, es decir que se eliminan los datos cuando se cierra el mismo.</p>
+            <p>El Ranking se ordena de manera descendente según el puntaje, luego por las vidas restantes y finalmente por órden alfabetico. Así de sacar el mismo puntaje decide la posición por la cantidad de vidas y si estas son iguales lo hace por el nombre.</p>
+
+
+
           </section>
         </div>
 
