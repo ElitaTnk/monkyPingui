@@ -34,15 +34,15 @@ class Set_figuras():
         random.shuffle(self.posiciones)
         random.shuffle(self.figuras_distintas)
 
-        self.figura_mono1 = self.pilas.actores.Mono(self.posiciones[0],y = 70)
-        self.figura_mono2 = self.pilas.actores.Mono(self.posiciones[1],y = 70)
-        self.figura_random = self.figuras_distintas[1](self.posiciones[2],y = 70)
+        self.figura_mono1 = self.pilas.actores.Mono(self.posiciones[0],y = 65)
+        self.figura_mono2 = self.pilas.actores.Mono(self.posiciones[1],y = 65)
+        self.figura_random = self.figuras_distintas[1](self.posiciones[2],y = 65)
 
         self.figura_mono1.escala = 0.9
         self.figura_mono2.escala = 0.9
         self.figura_random.escala = 1.4
 
-        self.figura_random.radio_de_colision = 50
+        self.figura_random.radio_de_colision = 45
         self.permite_colision()
 
 
@@ -57,7 +57,6 @@ class Set_figuras():
         self.figura_mono1.etiquetas.agregar("opcion_erronea")
         self.figura_mono2.etiquetas.agregar("opcion_erronea")
         self.figura_random.etiquetas.agregar("opcion_correcta")
-
 
 
 class Nivel(pilasengine.escenas.Escena):
@@ -79,7 +78,7 @@ class Nivel(pilasengine.escenas.Escena):
         self.aguja_reloj = self.pilas.actores.Actor()
         self.aguja_reloj.imagen = "data/imagenes/aguja-reloj.png"
         self.aguja_reloj.centro = ("centro", "abajo")
-        self.aguja_reloj.aprender(self.pilas.habilidades.MiHabilidad)
+        self.aguja_reloj.aprender(self.pilas.habilidades.Girar_como_reloj)
         self.aguja_reloj.y = 185
         self.aguja_reloj.x = 260
 
@@ -159,7 +158,7 @@ class Nivel(pilasengine.escenas.Escena):
         if self.figuras != None:
             self.figuras.figura_mono1.sonreir()
             self.figuras.figura_mono2.sonreir()
-            self.pilas.tareas.una_vez(0.5, self.acierta_callback)
+            self.pilas.tareas.una_vez(0.1, self.acierta_callback)
 
     def erronea_callback(self):
         self.vidas[0].eliminar()
@@ -172,7 +171,7 @@ class Nivel(pilasengine.escenas.Escena):
         if self.figuras != None:
             self.figuras.figura_mono1.gritar()
             self.figuras.figura_mono2.gritar()
-            self.pilas.tareas.una_vez(0.5, self.erronea_callback)
+            self.pilas.tareas.una_vez(0.1, self.erronea_callback)
 
 
     def refrescar_figuras(self):
@@ -187,7 +186,6 @@ class Nivel(pilasengine.escenas.Escena):
         self.pilas.escenas.EscenaMenu()
 
     def animacion_textoEscalar(self, texto):
-        texto.escala = 2
         texto.escala = [1], 1.5
 
     def chequear_vidas(self):
