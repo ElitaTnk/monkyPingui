@@ -44,7 +44,7 @@ class EscenaMenu(pilasengine.escenas.Escena):
     def comenzar_juego(self):
         #lleva a la escena del juego en si mismo
         self.musica_fondo.detener()
-        self.pilas.escenas.Nivel(4, 3, 0)
+        self.pilas.escenas.Nivel(20, 3, 0)
 
     def salir_juego(self):
         #sale del juego

@@ -11,6 +11,7 @@ pilas = pilasengine.iniciar()
 
 pilas.escenas.vincular(menu.EscenaMenu)
 pilas.escenas.vincular(ayuda.PantallaAyuda)
+pilas.habilidades.vincular(juego.Girar_como_reloj)
 pilas.escenas.vincular(juego.Nivel)
 pilas.escenas.vincular(juego.Nivel_2)
 pilas.escenas.vincular(resultados.Resultados)

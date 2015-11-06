@@ -15,6 +15,12 @@ class Barra_tiempo(pilasengine.actores.Temporizador):
         self.texto.y = 120
         self.texto.x = 255
 
+
+class Girar_como_reloj(pilasengine.habilidades.Habilidad):
+
+    def actualizar(self):
+        self.receptor.rotacion -= 360 / 60
+
 class Set_figuras():
     """Clase que permite generar dos figuras iguales y una variable distinta"""
 
@@ -70,6 +76,12 @@ class Nivel(pilasengine.escenas.Escena):
         self.tiempo = Barra_tiempo(self.pilas)
         self.tiempo.ajustar(tiempo, self.termina_el_tiempo)
         self.tiempo.comenzar()
+        self.aguja_reloj = self.pilas.actores.Actor()
+        self.aguja_reloj.imagen = "data/imagenes/aguja-reloj.png"
+        self.aguja_reloj.centro = ("centro", "abajo")
+        self.aguja_reloj.aprender(self.pilas.habilidades.MiHabilidad)
+        self.aguja_reloj.y = 185
+        self.aguja_reloj.x = 260
 
         self.puntaje = self.pilas.actores.Puntaje(x = 10, y = 200)
         self.puntaje.definir(self.cantidad_puntos)
@@ -125,32 +137,43 @@ class Nivel(pilasengine.escenas.Escena):
 
         """si no te mueves te da la opcion de regresar al inicio. si hay puntaje pasas al siguiente nivel"""
         if self.puntaje.obtener() == 0:
-            self.pilas.avisar ("NO TE MOVISTE... PERDISTE!!!!, ")
+            self.pilas.avisar ("NO TE MOVISTE... PERDISTE!!!!")
             self.boton = self.pilas.interfaz.Boton("Volver al Inicio")
             self.boton.conectar(self.regresa_inicio)
             self.boton.y = -100
             self.musica_fondo.detener()
             self.sonido_de_perder.reproducir()
         else:
-            self.textoFin = self.pilas.actores.Texto("FIN DEL PRIMER NIVEL", fuente = "data/Bangers.ttf", magnitud = 60)
+            self.textoFin = self.pilas.actores.Texto("FIN DEL PRIMER NIVEL", fuente = "data/fuentes/Bangers.ttf", magnitud = 60)
             self.siguiente = self.pilas.interfaz.Boton("pasar al siguiente nivel")
             self.siguiente.y = -200
             self.siguiente.conectar(self.pasar_siguiente)
 
+    def acierta_callback(self):
+        self.aumentar_puntaje()
+        self.eliminar_set_figuras()
+        self.sonido_de_acierto.reproducir()
+
     def acierta(self):
         """Efecto de la colision correcta"""
         if self.figuras != None:
-            self.aumentar_puntaje()
-            self.eliminar_set_figuras()
-            self.sonido_de_acierto.reproducir()
+            self.figuras.figura_mono1.sonreir()
+            self.figuras.figura_mono2.sonreir()
+            self.pilas.tareas.una_vez(0.5, self.acierta_callback)
+
+    def erronea_callback(self):
+        self.vidas[0].eliminar()
+        self.sonido_de_error.reproducir()
+        self.cantidad_vidas-= 1
+        self.eliminar_set_figuras()
 
     def erronea(self):
         """Efecto de la colision incorrecta"""
         if self.figuras != None:
-            self.eliminar_set_figuras()
-            self.vidas[0].eliminar()
-            self.sonido_de_error.reproducir()
-            self.cantidad_vidas-= 1
+            self.figuras.figura_mono1.gritar()
+            self.figuras.figura_mono2.gritar()
+            self.pilas.tareas.una_vez(0.5, self.erronea_callback)
+
 
     def refrescar_figuras(self):
         """Si hubo una colision y el tiempo no es ni 0 ni 1 ~ porque cuando se acaba se pone en 1 ~ vuelve a generar las figuras"""
@@ -177,7 +200,7 @@ class Nivel(pilasengine.escenas.Escena):
             self.tiempo.texto.color = pilasengine.colores.rojo
 
         if len(self.vidas) == 0:
-            self.textoFin = self.pilas.actores.Texto("Perdiste!!!")
+            self.textoFin = self.pilas.actores.Texto("Perdiste!!!", fuente = "data/fuentes/Bangers.ttf", magnitud = 60)
             self.textoFin.color = pilasengine.colores.rojo
             self.animacion_textoEscalar(self.textoFin)
             self.boton = self.pilas.interfaz.Boton("Volver al Inicio")
@@ -193,7 +216,7 @@ class Nivel(pilasengine.escenas.Escena):
             return True
 
     def pasar_siguiente(self):
-        self.pilas.escenas.Nivel_2(4,self.cantidad_vidas, self.cantidad_puntos)
+        self.pilas.escenas.Nivel_2(15,self.cantidad_vidas, self.cantidad_puntos)
 
 
 class Nivel_2(Nivel):
@@ -202,53 +225,26 @@ class Nivel_2(Nivel):
         Nivel.iniciar(self, tiempo, vidas, puntos)
         self.fondo = self.pilas.fondos.Volley()
         self.sonido_de_ganar = self.pilas.sonidos.cargar("data/musica/aplausos.wav")
+        self.puntaje_inicial = puntos
 
     def termina_el_tiempo(self):
-        self.textoFin = self.pilas.actores.Texto("FIN DEL JUEGO", fuente = "data/Bangers.ttf", magnitud = 60)
-        self.pingui.eliminar()
-        self.siguiente = self.pilas.interfaz.Boton("Ver resultados")
-        self.siguiente.y = -200
-        self.siguiente.conectar(self.ver_resultados)
-        self.musica_fondo.detener()
-        self.sonido_de_ganar.reproducir()
+        """si no te mueves te da la opcion de regresar al inicio. si hay puntaje pasas al siguiente nivel"""
+        if self.puntaje_inicial == self.cantidad_puntos:
+            self.pilas.avisar ("NO TE MOVISTE... PERDISTE!!!!, ")
+            self.boton = self.pilas.interfaz.Boton("Volver al Inicio")
+            self.boton.conectar(self.regresa_inicio)
+            self.boton.y = -100
+            self.musica_fondo.detener()
+            self.sonido_de_perder.reproducir()
+        else:
+            self.textoFin = self.pilas.actores.Texto("FIN DEL JUEGO", fuente = "data/fuentes/Bangers.ttf", magnitud = 60)
+            self.pingui.eliminar()
+            self.siguiente = self.pilas.interfaz.Boton("Ver resultados")
+            self.siguiente.y = -200
+            self.siguiente.conectar(self.ver_resultados)
+            self.musica_fondo.detener()
+            self.sonido_de_ganar.reproducir()
 
     def ver_resultados(self):
         self.puntaje_final = self.puntaje.obtener()
-        self.pilas.escenas.Resultados(self.puntaje_final)
-
-
-class Resultados(pilasengine.escenas.Escena):
-    def iniciar(self, numero):
-        self.cantidad = str(numero)
-        
-        self.sonido_de_festejo = self.pilas.sonidos.cargar("data/musica/festejo.wav")
-        self.fondo = self.pilas.fondos.Galaxia(dy=-5)
-        self.fondo.imagen = self.pilas.imagenes.cargar("data/imagenes/fondo.png")
-        self.fondo.imagen.repetir_vertical = True
-        self.fondo.imagen.repetir_horizontal = True
-        self.texto_puntaje = self.pilas.actores.Actor()
-        self.texto_puntaje.imagen = "data/imagenes/resultado.png"
-        self.texto_puntaje.y = 50
-        self.texto_puntaje.escala = 1
-        self.musica_fondo = self.pilas.sonidos.cargar("data/musica/turn_down_for_what_ringtone.wav")
-        self.musica_fondo.reproducir()
-        
-        self.texto_cantidad = self.pilas.actores.Texto(self.cantidad, fuente = "data/Bangers.ttf", magnitud = 60)
-        self.texto_cantidad.y = -50
-        self.texto_cantidad.x = 0
-        self.texto_cantidad.color = pilasengine.colores.blanco
-
-        self.boton = self.pilas.interfaz.Boton("Volver al Inicio")
-        self.boton.conectar(self.regresa_inicio)
-        self.boton.y = -100
-
-        self.sonido_de_festejo.reproducir()
-
-        self.pingui = self.pilas.actores.Actor()
-        self.pingui.imagen = "data/imagenes/tdfw.png"
-        self.pingui.y = -200
-        self.pingui.x = 200
-
-    def regresa_inicio(self):
-        self.musica_fondo.detener()
-        self.pilas.escenas.EscenaMenu()
+        self.pilas.escenas.Resultados(self.cantidad_vidas, self.puntaje_final)
