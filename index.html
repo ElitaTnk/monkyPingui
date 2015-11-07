@@ -57,128 +57,18 @@
 
             <p>En primer lugar el usuario se encuentra con la pantalla inicial, la cual contiene el logo del juego, un menú con tres opciones: Empezar a jugar, ver ayuda y salir del juego.</p>
 
-            <div class="tabs">
-                <ul class="header-tabs">
-                    <li  class="active">
-                        <a href="#final1" title="Resultado de la pantalla de inicio">Resultado</a>
-                    </li>
-                    <li>
-                        <a href="#codigo1" title="Código de la pantalla de inicio">Código</a>
-                    </li>
-                </ul>
-                <ul class="body-tabs">
-                    <li id="final1">
-                        <img alt="Primer escena" src="images/monkyPingui/pantalla_inicio.jpg">
-                    </li>
-                    <li id="codigo1">
-                        <pre class="brush: python">
-                            # -*- coding: UTF-8 -*-
-
-                            import pilasengine
-
-                            class Logo(pilasengine.actores.Actor):
-                                #creacion de clase Logo, para ser utilizada en varias escenas
-                                def iniciar(self):
-                                    #importamos logo desde carpeta
-                                    self.imagen = "data/logo.png"
-                                    self.y = 150
-                                    
-                            class EscenaMenu(pilasengine.escenas.Escena):
-                                #Escena principal donde se encuentra el menu para iniciar o ver ayuda o bien salir del juego
-                                #creación de la clase para la nueva pantalla a partir de la clase madre pilas.escena.Escena
-                                
-                                def iniciar(self):
-                                    #Contenido de la escena principal: logo, menu...
-                                    self.pilas.fondos.Galaxia()
-                                    self.menu_inicial()
-                                    self.logo = Logo(self.pilas)
-                                    self.animacion_entrada_texto(self.logo)
-
-                                def animacion_entrada_texto(self, texto):
-                                    texto.escala = 2
-                                    texto.escala = [1], 1.5
-
-                                def menu_inicial(self):
-                                    #creamos opciones y instanciamos el menu principal
-                                    opciones = [
-                                        ("Comenzar a jugar", self.comenzar_juego),
-                                        ("Ver ayuda", self.ir_pantalla_ayuda),
-                                        ("Salir", self.salir_juego)
-                                    ]
-                                    self.menu = self.pilas.actores.Menu(opciones, y = 0)
-
-                                def ir_pantalla_ayuda(self):
-                                    #lleva a la escena de ayuda
-                                    self.pilas.escenas.PantallaAyuda()
-
-                                def comenzar_juego(self):
-                                    #lleva a la escena del juego en si mismo
-                                    self.pilas.escenas.Nivel()
-
-                                def salir_juego(self):
-                                    #sale del juego
-                                    self.pilas.terminar() 
-                        </pre>
-                    </li>
-                </ul>
-            </div>
-            
+            <img alt="Primer escena" src="images/monkyPingui/pantalla_inicio.jpg">
 
             <p>La pantalla de ayuda contiene las indicaciones del juego y un botón para volver a la pantalla anterior</p>
 
-            <div class="tabs">
-                <ul class="header-tabs">
-                    <li class="active">
-                        <a href="#final2" title="Resultado de la pantalla de Ayuda">Resultado</a>
-                    </li>
-                    <li>
-                        <a href="#codigo2" title="Código de la pantalla de Ayuda">Código</a>
-                    </li>
-                </ul>
-                <ul class="body-tabs">
-                    <li id="final2">
-                        <img alt="Primer escena" src="images/monkyPingui/pantalla_ayuda.jpg">
-                    </li>
-                    <li id="codigo2">
-                        <pre class="brush: python">
-                            # -*- coding: UTF-8 -*-
-                            import pilasengine
-                            from menu import Logo
-
-                            texto_ayuda = "Mové a Pingui para indentificar la figura diferente de tres o mas opciones dadas.  El nivel se acaba cuando aciertes todos los rounds. Si se te acaba el tiempo o te quedas sin vidas perdes!"
-
-                            #decode de texto para que se pueda usar acentos 
-                            texto_ayuda = texto_ayuda.decode('utf-8')
-
-                            class PantallaAyuda(pilasengine.escenas.Escena):
-                                #en esta pantalla se dan las instrucciones de juego
-                                #creación de la clase para la nueva pantalla a partir de la clase madre pilas.escena.Escena
-                                
-                                def iniciar(self):
-                                    #instanciamos el fondo deseado y creamos métodos para mostrar los textos de ayuda y el boton de volver
-                                    self.pilas.fondos.Tarde()
-                                    self.crear_texto_ayuda()
-                                    self.boton = self.pilas.interfaz.Boton("Volver al Inicio")
-                                    self.boton.y = -100
-                                    self.boton.conectar(self.regresa_inicio)
-                                    self.logo = Logo(self.pilas)
-
-                                def crear_texto_ayuda(self):
-                                    self.pilas.actores.Texto("Como se juega?:" , y = 50)
-                                    self.pilas.actores.Texto(texto_ayuda,  magnitud = 16, ancho = 600, y = -30)
-                                        
-                                def regresa_inicio(self):
-                                    #vuelve la escena de inicio y ejecuta el cambio de pantalla
-                                    self.pilas.escenas.EscenaMenu()
-                        </pre>
-                    </li>
-                </ul>
-            </div>
+            <img alt="Primer escena" src="images/monkyPingui/pantalla_ayuda.jpg">
+                    
 
             <p>La siguiente escena ya muestra el juego en sí, aparecen tres figuras de las cuales dos son Monky, el mono, y una tercera que puede variar de personaje (tortuga, zanahoria o aceituna). Pingui es manejado por el usuario y podrá moverse con las flechas del teclado, hacia la izquierda y derecha y saltar. Esta colisión será la que marca la opción elegida. </p>
 
             <img alt="Primer escena" src="images/monkyPingui/pantalla_nivel1.jpg">
 
+            
             <p>El siguiente nivel consta de la misma cantidad de figuras pero con menos tiempo.</p>
 
             <p>Finalmente cuando se termina el juego, lleva a la pantalla de resultado final, donde se comunica el puntaje final obtenido y se permite el ingreso de texto al usuario para que ponga su nombre.</p>
@@ -187,8 +77,6 @@
 
             <p>Una vez ingresado y habiendo pulsado "ver ranking" se presenta la pantalla de ranking final, que lista las 10 mejores jugadas de la ejecución actual del programa, es decir que se eliminan los datos cuando se cierra el mismo.</p>
             <p>El Ranking se ordena de manera descendente según el puntaje, luego por las vidas restantes y finalmente por órden alfabetico. Así de sacar el mismo puntaje decide la posición por la cantidad de vidas y si estas son iguales lo hace por el nombre.</p>
-
-
 
           </section>
         </div>
