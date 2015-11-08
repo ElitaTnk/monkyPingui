@@ -1,17 +1,28 @@
 # -*- coding: UTF-8 -*-
+"""
+    Módulo: Menu
+    Diseño: M.Alejandra y Eliana
+    Código: M.Alejandra y Eliana
+    ---
+    Este módulo sólo contiene la importacion del framework.
+    La clase logo permite tener nuestro actor personalizado y es usado en varios módulos.
+
+    La clase EscenaMenu es la pantalla de inicio del juego, donde se encuentra el menu para iniciar o ver ayuda o bien salir del juego.
+    El método que lleva al juego en si es 'comenzar_juego', y la llamada a escena.Nivel requiere de 3 parámetros obligatorios.
+
+"""
 
 import pilasengine
 
 class Logo(pilasengine.actores.Actor):
-    #creacion de clase Logo, para ser utilizada en varias escenas
+    """creacion de clase Logo, con imagen personalizada para ser utilizada en varias escenas"""
     def iniciar(self):
         #importamos logo desde carpeta
         self.imagen = "data/imagenes/logo.png"
         self.y = 150
 
 class EscenaMenu(pilasengine.escenas.Escena):
-    #Escena principal donde se encuentra el menu para iniciar o ver ayuda o bien salir del juego
-    #creación de la clase para la nueva pantalla a partir de la clase madre pilas.escena.Escena
+    """creación de la clase para la nueva pantalla a partir de la clase madre pilas.escena.Escena"""
 
     def iniciar(self):
         #Contenido de la escena principal: logo, menu...

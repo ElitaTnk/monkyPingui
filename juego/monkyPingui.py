@@ -1,6 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
+"""
+	Módulo: ayuda
+	Diseño: M.Alejandra y Eliana
+	Código: M.Alejandra y Eliana
+	---
+
+	Este es el archivo principal del juego monkyPingui.
+	Contiene las importaciones de todos los modulos y es donde se vinculan las escenas.
+	La escena Menu debe ser la primera en ser mostrada por lo que se ejecuta justo antes de pilas.
+
+ """
 import pilasengine
 import ayuda
 import menu

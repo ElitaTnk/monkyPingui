@@ -1,5 +1,18 @@
 # -*- coding: utf-8 -*-
+"""
+    Módulo: Juego
+    Diseño: Eliana
+    Código: M.Alejandra y Eliana
+    ---
+    Este módulo contiene la importacion del framework, la libreria de colores y el módulo random de python.
+    La clase Barra_tiempo nos permite tener el actor Temporizador con todos sus atributos modificados, si bien no se usa en otros módulos su modificación queda mas clara de esta manera y luego solamente es instanciada por Nivel.
+    La clase Nivel necesita 3 parámetros obligatoriamente, el tiempo que se quiere dure esa escena, las vidas que va a tener el usuario y la cantidad de puntos al iniciar.
+    En ella se generan los personajes, se llama a las tareas de actualizar a los personajes, cheuqear vidas, etc. 
+    La clase Nivel_2 hereda de Nivel, por lo que también requiere de esos 3 parámetros.
+    Mayormente mantiene las funciones de la clase madre excepto por 'termina_el_tiempo', que debe chequear de manera distinta el puntaje y mostrar otro tipo de información.
+    Esta escena se conecta con resultados, por lo que en el método de 'ver_resultados' se hace la llamada a 'Resultados' pasando los parámetros correspondientes.
 
+"""
 import pilasengine
 import pilasengine.colores
 import random
@@ -17,15 +30,16 @@ class Barra_tiempo(pilasengine.actores.Temporizador):
 
 
 class Girar_como_reloj(pilasengine.habilidades.Habilidad):
-
+    """Habilidad personalizada semejante a las agujas de un reloj """
     def actualizar(self):
         self.receptor.rotacion -= 360 / 60
 
 class Set_figuras():
-    """Clase que permite generar dos figuras iguales y una variable distinta"""
+    """Clase que permite generar dos figuras iguales y una variable distinta.
+        Al inicio de la misma, si ninguna posicion es pasada usa los valores por default"
+    """
 
     def __init__(self, pilas, posiciones = [0, -170, 170]):
-        """inicio de la clase, si ninguna posicion es pasada usa los valores por default"""
         self.posiciones = posiciones
         self.pilas = pilas
 
@@ -149,25 +163,27 @@ class Nivel(pilasengine.escenas.Escena):
             self.siguiente.conectar(self.pasar_siguiente)
 
     def acierta_callback(self):
+        """Efecto de la colision correcta"""
         self.aumentar_puntaje()
         self.eliminar_set_figuras()
         self.sonido_de_acierto.reproducir()
 
     def acierta(self):
-        """Efecto de la colision correcta"""
+        """Si la colision es correcta los monos sonrien y la tarea acierta_callback es ejecutada 0.1s ~sino no se ve los monos sonreir~"""
         if self.figuras != None:
             self.figuras.figura_mono1.sonreir()
             self.figuras.figura_mono2.sonreir()
             self.pilas.tareas.una_vez(0.1, self.acierta_callback)
 
     def erronea_callback(self):
+        """Efecto de la colision erronea"""
         self.vidas[0].eliminar()
         self.sonido_de_error.reproducir()
         self.cantidad_vidas-= 1
         self.eliminar_set_figuras()
 
     def erronea(self):
-        """Efecto de la colision incorrecta"""
+        """Si la colision es erronea los monos sonrien y la tarea erronea_callback es ejecutada 0.1s ~sino no se ve los monos gritar~"""
         if self.figuras != None:
             self.figuras.figura_mono1.gritar()
             self.figuras.figura_mono2.gritar()
@@ -186,6 +202,7 @@ class Nivel(pilasengine.escenas.Escena):
         self.pilas.escenas.EscenaMenu()
 
     def animacion_textoEscalar(self, texto):
+        texto.escala = 2
         texto.escala = [1], 1.5
 
     def chequear_vidas(self):

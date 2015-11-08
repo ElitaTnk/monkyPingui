@@ -1,6 +1,17 @@
 # -*- coding: UTF-8 -*-
+"""
+    Módulo: ayuda
+    Diseño: M.Alejandra
+    Código: M.Alejandra y Eliana
+    ---
+    Este módulo solo contiene la importacion del framework y la clase logo de menu.
+    La clase PantallaAyuda es la escena que contiene las instrucciones del juego.
+
+"""
 import pilasengine
 from menu import Logo
+
+
 
 texto_ayuda = "Mové a Pingui con el teclado y saltá sobre el personaje distinto, el que consideres que no se repite ;) .  El nivel se acaba cuando se termina el tiempo. Tenés que hacer al menos 1 puntos por nivel. Si elegis mal, perdes una vida. ¡Cuidado!."
 
@@ -8,11 +19,9 @@ texto_ayuda = "Mové a Pingui con el teclado y saltá sobre el personaje distint
 texto_ayuda = texto_ayuda.decode('utf-8')
 
 class PantallaAyuda(pilasengine.escenas.Escena):
-    #en esta pantalla se dan las instrucciones de juego
-    #creación de la clase para la nueva pantalla a partir de la clase madre pilas.escena.Escena
+    """ esta pantalla utiliza la variable texto_ayuda"""
     
     def iniciar(self):
-        #instanciamos el fondo deseado y creamos métodos para mostrar los textos de ayuda y el boton de volver
         self.pilas.fondos.Tarde()
         self.crear_texto_ayuda()
         self.boton = self.pilas.interfaz.Boton("Volver al Inicio")

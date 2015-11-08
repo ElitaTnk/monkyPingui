@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
-
+"""
+    Módulo: Juego
+    Diseño: Eliana
+    Código: M.Alejandra y Eliana
+    ---
+    Este módulo contiene la clase Resultados, cuya escena muestra el resultado final obtenido, para lo cual necesita los parámetroa 'puntos' y 'vidas'.
+    También la clase Ranking, que es la escena final, que toma los mismos parámetros anteriormente mencionados, junto con 'nombre' y los usa para generar una lista de resultados.
+"""
 import pilasengine
 import pilasengine.colores
 from operator import itemgetter
