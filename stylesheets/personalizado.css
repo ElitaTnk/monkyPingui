@@ -18,39 +18,3 @@ code {
 #header_wrap {
     background: url(../images/monkyPingui/galaxia.png) repeat;
 }
-.header-tabs, .body-tabs {
-    padding: 0;
-    margin: 0;
-}
-.header-tabs li, .body-tabs li {
-    display: inline-block;
-    list-style-type: none;
-    list-style: none;
-}
-.header-tabs li a {
-    background: #dedede;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    color: #000;
-    display: block;
-    padding: 10px 5px;
-}
-.header-tabs li.active a {
-    background: #0090ff;
-    color: #fff;
-}
-.body-tabs  li {
-    display: none;
-}
-.body-tabs  li:first-child {
-    display: block;
-}
-
-.body-tabs  li img {
-   width: 100%;
-   max-width: 600px;
-   height: auto;
-   display: block;
-   margin: 0;
-   padding: 0;  
-}
