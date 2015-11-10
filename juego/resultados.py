@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    Módulo: Juego
+    Módulo: Resultados
     Diseño: Eliana
     Código: M.Alejandra y Eliana
     ---

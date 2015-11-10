@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 """
-	Módulo: ayuda
+	Módulo: monkyPingui
 	Diseño: M.Alejandra y Eliana
 	Código: M.Alejandra y Eliana
 	---
