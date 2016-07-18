@@ -17,6 +17,7 @@ import ayuda
 import menu
 import juego
 import resultados
+import versus
 
 pilas = pilasengine.iniciar()
 
@@ -27,5 +28,6 @@ pilas.escenas.vincular(juego.Nivel)
 pilas.escenas.vincular(juego.Nivel_2)
 pilas.escenas.vincular(resultados.Resultados)
 pilas.escenas.vincular(resultados.Ranking)
+pilas.escenas.vincular(versus.Round)
 pilas.escenas.EscenaMenu()
 pilas.ejecutar()

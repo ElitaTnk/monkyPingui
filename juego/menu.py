@@ -42,6 +42,7 @@ class EscenaMenu(pilasengine.escenas.Escena):
         #creamos opciones y instanciamos el menu principal
         opciones = [
             ("Comenzar a jugar", self.comenzar_juego),
+            ("Versus", self.versus_juego),
             ("Ver ayuda", self.ir_pantalla_ayuda),
             ("Salir", self.salir_juego)
         ]
@@ -55,10 +56,15 @@ class EscenaMenu(pilasengine.escenas.Escena):
     def comenzar_juego(self):
         #lleva a la escena del juego en si mismo
         self.musica_fondo.detener()
-        self.pilas.escenas.Nivel(20, 3, 0)
+        self.pilas.escenas.Nivel(5, 3, 0)
+
+    def versus_juego(self):
+        #lleva al modo player vs player
+        self.musica_fondo.detener()
+        self.pilas.escenas.Round(5, 3, 0, 1)
+
 
     def salir_juego(self):
         #sale del juego
         self.musica_fondo.detener()
         self.pilas.terminar()
-

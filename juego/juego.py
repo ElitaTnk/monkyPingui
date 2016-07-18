@@ -7,7 +7,7 @@
     Este módulo contiene la importacion del framework, la libreria de colores y el módulo random de python.
     La clase Barra_tiempo nos permite tener el actor Temporizador con todos sus atributos modificados, si bien no se usa en otros módulos su modificación queda mas clara de esta manera y luego solamente es instanciada por Nivel.
     La clase Nivel necesita 3 parámetros obligatoriamente, el tiempo que se quiere dure esa escena, las vidas que va a tener el usuario y la cantidad de puntos al iniciar.
-    En ella se generan los personajes, se llama a las tareas de actualizar a los personajes, cheuqear vidas, etc. 
+    En ella se generan los personajes, se llama a las tareas de actualizar a los personajes, cheuqear vidas, etc.
     La clase Nivel_2 hereda de Nivel, por lo que también requiere de esos 3 parámetros.
     Mayormente mantiene las funciones de la clase madre excepto por 'termina_el_tiempo', que debe chequear de manera distinta el puntaje y mostrar otro tipo de información.
     Esta escena se conecta con resultados, por lo que en el método de 'ver_resultados' se hace la llamada a 'Resultados' pasando los parámetros correspondientes.
@@ -108,7 +108,7 @@ class Nivel(pilasengine.escenas.Escena):
         self.sonido_de_perder = self.pilas.sonidos.cargar("data/musica/perdedor.wav")
         self.musica_fondo = self.pilas.musica.cargar("data/musica/POL-across-the-skies-short.wav")
         self.musica_fondo.reproducir(repetir = True)
-        
+
         #vidas
         self.vidas_posiciones = [-200, -240, -280]
         self.vidas = (self.pilas.actores.Estrella()* self.cantidad_vidas)
@@ -251,6 +251,7 @@ class Nivel_2(Nivel):
             self.boton.y = -100
             self.musica_fondo.detener()
             self.sonido_de_perder.reproducir()
+            self.pingui.eliminar()
         else:
             self.textoFin = self.pilas.actores.Texto("FIN DEL JUEGO", fuente = "data/fuentes/Bangers.ttf", magnitud = 60)
             self.pingui.eliminar()
