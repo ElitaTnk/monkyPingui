@@ -61,7 +61,7 @@ class EscenaMenu(pilasengine.escenas.Escena):
     def versus_juego(self):
         #lleva al modo player vs player
         self.musica_fondo.detener()
-        self.pilas.escenas.Round(5, 3, 0, 1)
+        self.pilas.escenas.Round(5, 3, 0, "player 1")
 
 
     def salir_juego(self):
