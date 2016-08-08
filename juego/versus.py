@@ -22,6 +22,8 @@ class Round(Nivel):
 
         self.avisoPlayer = self.pilas.actores.Texto(self.player)
         self.avisoPlayer.color = pilasengine.colores.rojo
+        self.avisoPlayer.x = 100
+        self.avisoPlayer.y = 200
 
     def termina_el_tiempo(self):
         self.pingui.eliminar()
@@ -36,7 +38,7 @@ class Round(Nivel):
         self.textoFin = self.pilas.actores.Texto(puntaje_texto , fuente = "data/fuentes/Bangers.ttf", magnitud = 60)
         self.musica_fondo.detener()
 
-        if self.player == "player 1":
+        if self.player == "Player 1":
             self.siguiente = self.pilas.interfaz.Boton("Juega el player 2")
             self.siguiente.y = -200
             self.siguiente.conectar(self.pasar_siguiente)
@@ -48,7 +50,7 @@ class Round(Nivel):
             self.siguiente.conectar(self.ver_resultados_versus)
 
     def pasar_siguiente(self):
-        self.pilas.escenas.Round(6, 3, 0, "player 2")
+        self.pilas.escenas.Round(6, 3, 0, "Player 2")
 
     def ver_resultados_versus(self):
         del player_setResultados[:]

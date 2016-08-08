@@ -78,12 +78,17 @@ class PantallaFinal(pilasengine.escenas.Escena):
         self.titulo_puntos = self.pilas.actores.Texto("Puntos", fuente = "data/fuentes/Bangers.ttf", magnitud = 20, y = 175, x = 0)
         self.titulo_vidas = self.pilas.actores.Texto("Vidas", fuente = "data/fuentes/Bangers.ttf", magnitud = 20, y = 175, x = 70)
 
-    def armadoListaResultados(self, listaDeResultados):
-        listaDeResultados =  sorted(listaDeResultados,key=itemgetter(0))
-        listaDeResultados =  sorted(listaDeResultados,key=itemgetter(1))
-        listaDeResultados =  sorted(listaDeResultados,key=itemgetter(2), reverse=True)
+    def ordenarResultados(self, listaDeResultados):
+        listaDeResultados =  sorted(listaDeResultados,key=itemgetter(0)) #alfabeticamente
+        listaDeResultados =  sorted(listaDeResultados,key=itemgetter(2), reverse=True) #por puntaje
+        listaDeResultados =  sorted(listaDeResultados,key=itemgetter(1), reverse=True) #por vidas
+
         listaDeResultados = listaDeResultados[:10]
 
+        return listaDeResultados
+
+
+    def listarResultados(self, listaDeResultados):
         idx = 0
         ajuste_altura = 178
 
@@ -129,15 +134,47 @@ class Ranking(PantallaFinal):
         global lista_ranking
         lista_ranking.append(self.score)
 
-        self.armadoListaResultados(lista_ranking)
+
+        self.listarResultados(self.ordenarResultados(lista_ranking))
 
 class EndRound(PantallaFinal):
     """Pantalla de resultados para el versus """
     def iniciar(self, versusResultados):
         PantallaFinal.iniciar(self)
         #logica
-        self.caca = self.pilas.actores.Texto(str(len(versusResultados)))
-        self.caca.color = pilasengine.colores.rojo
         self.versusResultados = versusResultados
 
-        self.armadoListaResultados(self.versusResultados)
+        if self.compararResultados(self.ordenarResultados(self.versusResultados)) == False:
+            self.listarResultados(self.ordenarResultados(self.versusResultados))
+            self.otroPingui = self.pilas.actores.Actor()
+            self.otroPingui.imagen = "data/imagenes/perdedor.png"
+            self.otroPingui.y = -120
+            self.otroPingui.x = -200
+
+            self.ganador = self.ordenarResultados(self.versusResultados)
+            self.textoGanador = self.pilas.actores.Texto("Ganador " + self.ganador[0][0], fuente = "data/fuentes/Bangers.ttf", magnitud = 60, y = 20)
+
+    def compararResultados(self, resultados):
+        maximo = 0
+        vidas = 0
+        for score in resultados:
+            if score[2] > maximo and score[1] > vidas:
+                maximo = score[2]
+                vidas = score[1]
+            elif score[2] == maximo:
+                if score[1] == vidas:
+                    self.empatados = self.pilas.actores.Texto("Empatados", fuente = "data/fuentes/Bangers.ttf", magnitud = 60, y = 20)
+                    self.otroPingui = self.pilas.actores.Actor()
+                    self.otroPingui.imagen = "data/imagenes/tdfw2.png"
+                    self.otroPingui.y = -120
+                    self.otroPingui.x = -200
+
+                    self.cadenas = self.pilas.actores.Actor()
+                    self.cadenas.imagen = "data/imagenes/thuglife.png"
+                    self.cadenas.y = 300
+                    self.cadenas.x = -220
+                    self.cadenas.y = [-30], 6
+                else:
+                    return False
+            else:
+                return False
