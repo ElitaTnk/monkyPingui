@@ -9,18 +9,19 @@
 
 """
 import pilasengine
+from pilasengine.controles import simbolos
 from menu import Logo
 
 
 
 texto_ayuda = "Mové a Pingui con el teclado y saltá sobre el personaje distinto, el que consideres que no se repite ;) .  El nivel se acaba cuando se termina el tiempo. Tenés que hacer al menos 1 puntos por nivel. Si elegis mal, perdes una vida. ¡Cuidado!."
 
-#decode de texto para que se pueda usar acentos 
+#decode de texto para que se pueda usar acentos
 texto_ayuda = texto_ayuda.decode('utf-8')
 
 class PantallaAyuda(pilasengine.escenas.Escena):
     """ esta pantalla utiliza la variable texto_ayuda"""
-    
+
     def iniciar(self):
         self.pilas.fondos.Tarde()
         self.crear_texto_ayuda()
@@ -32,8 +33,7 @@ class PantallaAyuda(pilasengine.escenas.Escena):
     def crear_texto_ayuda(self):
         self.pilas.actores.Texto("Como se juega?:" , y = 50, fuente = "data/fuentes/Bangers.ttf")
         self.pilas.actores.Texto(texto_ayuda,  magnitud = 16, ancho = 600, y = -30)
-            
+
     def regresa_inicio(self):
         #vuelve la escena de inicio y ejecuta el cambio de pantalla
         self.pilas.escenas.EscenaMenu()
-

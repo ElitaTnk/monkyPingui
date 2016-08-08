@@ -163,6 +163,7 @@ class EndRound(PantallaFinal):
                 vidas = score[1]
             elif score[2] == maximo:
                 if score[1] == vidas:
+                    self.listarResultados(resultados)
                     self.empatados = self.pilas.actores.Texto("Empatados", fuente = "data/fuentes/Bangers.ttf", magnitud = 60, y = 20)
                     self.otroPingui = self.pilas.actores.Actor()
                     self.otroPingui.imagen = "data/imagenes/tdfw2.png"
