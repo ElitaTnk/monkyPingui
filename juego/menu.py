@@ -56,12 +56,12 @@ class EscenaMenu(pilasengine.escenas.Escena):
     def comenzar_juego(self):
         #lleva a la escena del juego en si mismo
         self.musica_fondo.detener()
-        self.pilas.escenas.Nivel(5, 3, 0)
+        self.pilas.escenas.Nivel(10, 3, 0)
 
     def versus_juego(self):
         #lleva al modo player vs player
         self.musica_fondo.detener()
-        self.pilas.escenas.Round(5, 3, 0, "Player 1")
+        self.pilas.escenas.Round(10, 3, 0, "Player 1")
 
 
     def salir_juego(self):
@@ -107,6 +107,6 @@ class BotonMejorado():
         escenaActual = self.pilas.escenas.obtener_escena_actual()
         if hasattr(escenaActual,'musica_fondo') == True:
             escenaActual.musica_fondo.detener()
-            
+
         #vuelve la escena de inicio y ejecuta el cambio de pantalla
         self.pilas.escenas.EscenaMenu()

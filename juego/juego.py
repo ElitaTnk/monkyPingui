@@ -223,7 +223,7 @@ class Nivel(pilasengine.escenas.Escena):
             return True
 
     def pasar_siguiente(self):
-        self.pilas.escenas.Nivel_2(3,self.cantidad_vidas, self.cantidad_puntos)
+        self.pilas.escenas.Nivel_2(7,self.cantidad_vidas, self.cantidad_puntos)
 
 
 class Nivel_2(Nivel):

@@ -49,7 +49,7 @@ class Round(Nivel):
             self.versusResultados = list(player_setResultados)
 
     def pasar_siguiente(self):
-        self.pilas.escenas.Round(6, 3, 0, "Player 2")
+        self.pilas.escenas.Round(10, 3, 0, "Player 2")
 
     def ver_resultados_versus(self):
         #elimino el contenido de la lista para que este en 0 cuando un nuevo versus se juegue.
