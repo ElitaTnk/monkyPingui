@@ -16,6 +16,7 @@
 import pilasengine
 import pilasengine.colores
 import random
+from menu import BotonMejorado
 
 class Barra_tiempo(pilasengine.actores.Temporizador):
     """ nueva barra de tiempo, con imagen y cambio de argumentos"""
@@ -151,16 +152,12 @@ class Nivel(pilasengine.escenas.Escena):
         """si no te mueves te da la opcion de regresar al inicio. si hay puntaje pasas al siguiente nivel"""
         if self.puntaje.obtener() == 0:
             self.pilas.avisar ("NO TE MOVISTE... PERDISTE!!!!")
-            self.boton = self.pilas.interfaz.Boton("Volver al Inicio")
-            self.boton.conectar(self.regresa_inicio)
-            self.boton.y = -100
+            self.boton = BotonMejorado(self.pilas, "Volver al inicio", -100)
             self.musica_fondo.detener()
             self.sonido_de_perder.reproducir()
         else:
             self.textoFin = self.pilas.actores.Texto("FIN DEL PRIMER NIVEL", fuente = "data/fuentes/Bangers.ttf", magnitud = 60)
-            self.siguiente = self.pilas.interfaz.Boton("pasar al siguiente nivel")
-            self.siguiente.y = -200
-            self.siguiente.conectar(self.pasar_siguiente)
+            self.siguiente = BotonMejorado(self.pilas, "pasar al siguiente nivel", -200, 0, False ,self.pasar_siguiente )
 
     def acierta_callback(self):
         """Efecto de la colision correcta"""
@@ -198,9 +195,6 @@ class Nivel(pilasengine.escenas.Escena):
         if self.tiempo.tiempo != 0 and self.tiempo.tiempo != 1 and self.chequear_vidas() == True:
             return True
 
-    def regresa_inicio(self):
-        self.pilas.escenas.EscenaMenu()
-
     def animacion_textoEscalar(self, texto):
         texto.escala = 2
         texto.escala = [1], 1.5
@@ -218,9 +212,7 @@ class Nivel(pilasengine.escenas.Escena):
             self.textoFin = self.pilas.actores.Texto("Perdiste!!!", fuente = "data/fuentes/Bangers.ttf", magnitud = 60)
             self.textoFin.color = pilasengine.colores.rojo
             self.animacion_textoEscalar(self.textoFin)
-            self.boton = self.pilas.interfaz.Boton("Volver al Inicio")
-            self.boton.y = -100
-            self.boton.conectar(self.regresa_inicio)
+            self.boton = BotonMejorado(self.pilas, "Volver al inicio", -100)
             self.eliminar_set_figuras()
             self.tiempo.detener()
             self.pingui.eliminar()
@@ -231,7 +223,7 @@ class Nivel(pilasengine.escenas.Escena):
             return True
 
     def pasar_siguiente(self):
-        self.pilas.escenas.Nivel_2(15,self.cantidad_vidas, self.cantidad_puntos)
+        self.pilas.escenas.Nivel_2(3,self.cantidad_vidas, self.cantidad_puntos)
 
 
 class Nivel_2(Nivel):
@@ -246,18 +238,14 @@ class Nivel_2(Nivel):
         """si no te mueves te da la opcion de regresar al inicio. si hay puntaje pasas al siguiente nivel"""
         if self.puntaje_inicial == self.cantidad_puntos:
             self.pilas.avisar ("NO TE MOVISTE... PERDISTE!!!!, ")
-            self.boton = self.pilas.interfaz.Boton("Volver al Inicio")
-            self.boton.conectar(self.regresa_inicio)
-            self.boton.y = -100
+            self.boton = BotonMejorado(self.pilas, "Volver al inicio", -100)
             self.musica_fondo.detener()
             self.sonido_de_perder.reproducir()
             self.pingui.eliminar()
         else:
             self.textoFin = self.pilas.actores.Texto("FIN DEL JUEGO", fuente = "data/fuentes/Bangers.ttf", magnitud = 60)
             self.pingui.eliminar()
-            self.siguiente = self.pilas.interfaz.Boton("Ver resultados")
-            self.siguiente.y = -200
-            self.siguiente.conectar(self.ver_resultados)
+            self.siguiente = BotonMejorado(self.pilas, "Ver resultados", -200, 0, False ,self.ver_resultados )
             self.musica_fondo.detener()
             self.sonido_de_ganar.reproducir()
 

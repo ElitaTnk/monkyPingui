@@ -9,9 +9,8 @@
 
 """
 import pilasengine
-from pilasengine.controles import simbolos
 from menu import Logo
-
+from menu import BotonMejorado
 
 
 texto_ayuda = "Mové a Pingui con el teclado y saltá sobre el personaje distinto, el que consideres que no se repite ;) .  El nivel se acaba cuando se termina el tiempo. Tenés que hacer al menos 1 puntos por nivel. Si elegis mal, perdes una vida. ¡Cuidado!."
@@ -25,15 +24,10 @@ class PantallaAyuda(pilasengine.escenas.Escena):
     def iniciar(self):
         self.pilas.fondos.Tarde()
         self.crear_texto_ayuda()
-        self.boton = self.pilas.interfaz.Boton("Volver al Inicio")
-        self.boton.y = -100
-        self.boton.conectar(self.regresa_inicio)
+        self.boton = BotonMejorado(self.pilas, "Volver al inicio", -100)
+
         self.logo = Logo(self.pilas)
 
     def crear_texto_ayuda(self):
         self.pilas.actores.Texto("Como se juega?:" , y = 50, fuente = "data/fuentes/Bangers.ttf")
         self.pilas.actores.Texto(texto_ayuda,  magnitud = 16, ancho = 600, y = -30)
-
-    def regresa_inicio(self):
-        #vuelve la escena de inicio y ejecuta el cambio de pantalla
-        self.pilas.escenas.EscenaMenu()

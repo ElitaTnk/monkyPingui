@@ -10,6 +10,7 @@
 import pilasengine
 import pilasengine.colores
 from operator import itemgetter
+from menu import BotonMejorado
 
 lista_ranking = []
 
@@ -41,9 +42,7 @@ class Resultados(pilasengine.escenas.Escena):
         self.nombre_jugador = self.pilas.interfaz.IngresoDeTexto("Ale&Eli", limite_de_caracteres=8, y = -50)
         self.nombre_jugador.decir("Escribi tu nombre, maximo 7 letras")
 
-        self.boton = self.pilas.interfaz.Boton("Ver ranking")
-        self.boton.conectar(self.ver_ranking)
-        self.boton.y = -100
+        self.boton = BotonMejorado(self.pilas, "Ver ranking", -100, 0, False ,self.ver_ranking )
 
     def ver_ranking(self):
         self.pilas.escenas.Ranking(self.vidas, self.puntos, self.nombre_jugador)
@@ -59,9 +58,7 @@ class PantallaFinal(pilasengine.escenas.Escena):
         self.musica_fondo = self.pilas.sonidos.cargar("data/musica/turn_down_for_what_ringtone.wav")
         self.musica_fondo.reproducir()
 
-        self.boton = self.pilas.interfaz.Boton("Volver al Inicio")
-        self.boton.conectar(self.regresa_inicio)
-        self.boton.y = -200
+        self.boton = BotonMejorado(self.pilas, "Volver al inicio", -200)
 
         self.pingui = self.pilas.actores.Actor()
         self.pingui.imagen = "data/imagenes/tdfw.png"
@@ -109,7 +106,6 @@ class PantallaFinal(pilasengine.escenas.Escena):
 
 
     def regresa_inicio(self):
-        self.musica_fondo.detener()
         self.pilas.escenas.EscenaMenu()
 
 

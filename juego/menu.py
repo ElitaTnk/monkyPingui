@@ -68,3 +68,42 @@ class EscenaMenu(pilasengine.escenas.Escena):
         #sale del juego
         self.musica_fondo.detener()
         self.pilas.terminar()
+
+
+class BotonMejorado():
+    def __init__(self, pilas, texto="sin texto", y=0, x=0, inicio=True, custom=None):
+        self.pilas = pilas
+        self.boton = self.pilas.interfaz.Boton(texto)
+        self.boton.y = y
+        self.boton.x = x
+        if inicio:
+            self.boton.conectar(self.regresa_inicio)
+        elif custom is not None:
+            self.boton.conectar(custom)
+        self.pilas.eventos.pulsa_tecla.conectar(self.al_pulsar_tecla)
+
+    # Para activar el botón con la pulsación de una tecla tenemos
+    # que generar una función de respuesta y
+    def al_pulsar_tecla(self, tecla):
+        if tecla.codigo == 6: # 6 es el código de ENTER
+            self.simular_click_sobre(self.boton)
+
+    # Esta función permite simular un click sobre un actor
+    def simular_click_sobre(self,actor_boton):
+
+        class Evento(object):
+
+            def __init__(self, x, y):
+                self.x = x
+                self.y = y
+
+        x = actor_boton.x
+        y = actor_boton.y
+        actor_boton.cuando_hace_click(Evento(x, y))
+
+    def regresa_inicio(self):
+        escenaActual = self.pilas.escenas.obtener_escena_actual()
+        if hasattr(escenaActual,'musica_fondo') == True:
+            escenaActual.musica_fondo.detener()
+        #vuelve la escena de inicio y ejecuta el cambio de pantalla
+        self.pilas.escenas.EscenaMenu()

@@ -11,6 +11,7 @@ import pilasengine
 import pilasengine.colores
 import random
 from juego import Nivel
+from menu import BotonMejorado
 
 player_setResultados = []
 
@@ -39,15 +40,10 @@ class Round(Nivel):
         self.musica_fondo.detener()
 
         if self.player == "Player 1":
-            self.siguiente = self.pilas.interfaz.Boton("Juega el player 2")
-            self.siguiente.y = -200
-            self.siguiente.conectar(self.pasar_siguiente)
+            self.siguiente = BotonMejorado(self.pilas, "Juega Player 2", -200, 0, False ,self.pasar_siguiente )
         else:
-            self.siguiente = self.pilas.interfaz.Boton("Ver resultados")
-            self.siguiente.y = -200
+            self.siguiente = BotonMejorado(self.pilas, "Ver resultados", -200, 0, False ,self.ver_resultados_versus )
             self.versusResultados = list(player_setResultados)
-
-            self.siguiente.conectar(self.ver_resultados_versus)
 
     def pasar_siguiente(self):
         self.pilas.escenas.Round(6, 3, 0, "Player 2")

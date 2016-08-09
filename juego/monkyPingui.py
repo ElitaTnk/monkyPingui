@@ -21,6 +21,7 @@ import versus
 
 pilas = pilasengine.iniciar()
 
+
 pilas.escenas.vincular(menu.EscenaMenu)
 pilas.escenas.vincular(ayuda.PantallaAyuda)
 pilas.habilidades.vincular(juego.Girar_como_reloj)
