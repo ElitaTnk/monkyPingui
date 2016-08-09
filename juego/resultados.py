@@ -76,6 +76,7 @@ class PantallaFinal(pilasengine.escenas.Escena):
         self.titulo_vidas = self.pilas.actores.Texto("Vidas", fuente = "data/fuentes/Bangers.ttf", magnitud = 20, y = 175, x = 70)
 
     def ordenarResultados(self, listaDeResultados):
+        #ordena los resultados en forma de lista de manera:
         listaDeResultados =  sorted(listaDeResultados,key=itemgetter(0)) #alfabeticamente
         listaDeResultados =  sorted(listaDeResultados,key=itemgetter(2), reverse=True) #por puntaje
         listaDeResultados =  sorted(listaDeResultados,key=itemgetter(1), reverse=True) #por vidas
@@ -86,6 +87,7 @@ class PantallaFinal(pilasengine.escenas.Escena):
 
 
     def listarResultados(self, listaDeResultados):
+        #crea una lista visual ordenada de los elementos dentro de la lista de resultados
         idx = 0
         ajuste_altura = 178
 
@@ -105,12 +107,8 @@ class PantallaFinal(pilasengine.escenas.Escena):
             self.ranking_linea.centro = ("izquierda", "centro") #cambio el centro del objeto para que quede centrado a la izquierda.
 
 
-    def regresa_inicio(self):
-        self.pilas.escenas.EscenaMenu()
-
-
 class Ranking(PantallaFinal):
-    """Escena final de Ranking, donde se listan las 10 mejores jugadas de la ejecución actual, ordenadas primero por puntaje descendente, luego por las vidas y luego alfabeticamente ascendente.
+    """Escena final de Ranking, donde se listan las 10 mejores jugadas de la ejecución actual, ordenadas.
     """
     def iniciar(self, vidas, puntos, nombre):
         PantallaFinal.iniciar(self)
@@ -137,9 +135,10 @@ class EndRound(PantallaFinal):
     """Pantalla de resultados para el versus """
     def iniciar(self, versusResultados):
         PantallaFinal.iniciar(self)
-        #logica
+
         self.versusResultados = versusResultados
 
+        #comparo los resultados de ambos jugadores, si no son iguales lista los resultados y crea otras imagenes.
         if self.compararResultados(self.ordenarResultados(self.versusResultados)) == False:
             self.listarResultados(self.ordenarResultados(self.versusResultados))
             self.otroPingui = self.pilas.actores.Actor()
@@ -151,6 +150,7 @@ class EndRound(PantallaFinal):
             self.textoGanador = self.pilas.actores.Texto("Ganador " + self.ganador[0][0], fuente = "data/fuentes/Bangers.ttf", magnitud = 60, y = 20)
 
     def compararResultados(self, resultados):
+        #toma el puntaje y lo compara con el siguiente, luego hace lo mismo con las vidas, si ambos son iguales se empata. Sino sale del loop 
         maximo = 0
         vidas = 0
         for score in resultados:

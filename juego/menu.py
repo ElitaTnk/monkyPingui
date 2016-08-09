@@ -71,6 +71,7 @@ class EscenaMenu(pilasengine.escenas.Escena):
 
 
 class BotonMejorado():
+    """ clase personalizada que contiene métodos para poder usar la clase boton de pilas con la tecla enter, pudiendo usar la funcion de ir a inicio o una en particular pasada en la referencia en una escena"""
     def __init__(self, pilas, texto="sin texto", y=0, x=0, inicio=True, custom=None):
         self.pilas = pilas
         self.boton = self.pilas.interfaz.Boton(texto)
@@ -102,8 +103,10 @@ class BotonMejorado():
         actor_boton.cuando_hace_click(Evento(x, y))
 
     def regresa_inicio(self):
+        #algunas escenas tienen sonidos que deben ser detenidos al salir de la misma.
         escenaActual = self.pilas.escenas.obtener_escena_actual()
         if hasattr(escenaActual,'musica_fondo') == True:
             escenaActual.musica_fondo.detener()
+            
         #vuelve la escena de inicio y ejecuta el cambio de pantalla
         self.pilas.escenas.EscenaMenu()
