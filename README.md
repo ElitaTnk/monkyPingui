@@ -6,11 +6,11 @@ Este proyecto nace como trabajo para la cursada de Paradigmas de Programación d
 
 El juego consiste en acertar la mayor cantidad de veces la figura distinta de un set dado. El tiempo esta repartido en dos niveles y la dificultad resulta en la cantidad de tiempo entre un nivel y el otro. Además se tienen 3 vidas, las cuales disminuyen si el usuario se equivoca al elegir.
 
-#nuevo#
+#2016 - Nuevo #
 
 El proyecto aún es mantenido y desarrollado por ElitaTnk, por lo que hiré haciendo nuevos fixes y desarrollos con el tiempo.
 
-Ahora podemos jugar en modo versus, por turno y retar a otro Pingui ;) 
+Ahora podemos jugar en modo versus, por turno y retar a otro Pingui ;)
 
 Espero que lo disfruten, que sirva para aprender y cualquier duda envienmé un email.
 
